@@ -35,4 +35,9 @@
         android:name="com.example.eventflow.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.example.eventflow.ui.detail.EventDetailFragment"
+        android:label="fragment_event_detail"
+        tools:layout="@layout/fragment_event_detail" />
 </navigation>
