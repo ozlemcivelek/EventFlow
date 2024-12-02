@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.example.eventflow"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.eventflow"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -67,7 +67,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     // Import the BoM for the Firebase platform
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.analytics)
 }
 

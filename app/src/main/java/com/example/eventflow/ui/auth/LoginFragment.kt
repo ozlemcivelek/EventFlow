@@ -41,7 +41,8 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             viewModel.login(
                 binding.emailAddressEditText.text.toString(),
-                binding.passwordEditText.text.toString())
+                binding.passwordEditText.text.toString()
+            )
 
             viewModel.loginFlow.observe(viewLifecycleOwner) {
                 when (it) {
@@ -49,21 +50,29 @@ class LoginFragment : Fragment() {
                         //HATA mesajina göre ekranda işlem yapma
                         (activity as MainActivity).hideProgress()
                         Log.d("TAG", "HATA MESAJI: ${it.exception.message} ")
-                        Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT)
+                            .show()
                     }
+
                     Resource.Loading -> {
                         //TODO show loading
                         (activity as MainActivity).showProgress()
                         //Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
                     }
-                    is Resource.Success ->  {
+
+                    is Resource.Success -> {
                         (activity as MainActivity).hideProgress()
                         findNavController().navigate(LoginFragmentDirections.toHome())
                         //Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_SHORT).show()
                     }
+
                     null -> TODO()
                 }
             }
+        }
+
+        if (viewModel.currentUser != null) {
+            findNavController().navigate(LoginFragmentDirections.toHome())
         }
     }
 

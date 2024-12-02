@@ -2,7 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="themeColor">#FFA000</color>
-    <color name="themePrimaryContainer">#E64A19</color>
+    <color name="primary">#FFA000</color>
+    <color name="primary_a60">#99FFA000</color>
+    <color name="primary_container">#E64A19</color>
     <color name="half_black">#40000000</color>
+    <color name="primary_inactive">#FFECB3</color>
 </resources>
