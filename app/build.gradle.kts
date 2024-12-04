@@ -68,6 +68,8 @@ dependencies {
 
     // Import the BoM for the Firebase platform
     implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.1")
+
     implementation(libs.google.firebase.analytics)
 }
 

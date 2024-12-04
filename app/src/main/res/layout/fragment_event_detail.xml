@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/dusty_white"
     android:paddingHorizontal="24dp"
-    tools:context=".ui.detail.EventDetailFragment">
+    tools:context=".ui.event.EventDetailFragment">
 
     <ImageButton
         android:id="@+id/backButton"
@@ -50,6 +50,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eventTitleEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="14sp" />
@@ -118,6 +119,7 @@
         app:layout_constraintTop_toBottomOf="@id/categoryRadioGroup">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventDateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -127,7 +129,7 @@
 
     <!-- Selected First Time -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/eventFirstTime"
+        android:id="@+id/eventStartTime"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="4dp"
@@ -136,11 +138,12 @@
         app:boxBackgroundColor="@color/white"
         app:endIconDrawable="@drawable/ic_first_time"
         app:endIconMode="custom"
-        app:layout_constraintEnd_toStartOf="@+id/eventLastTime"
+        app:layout_constraintEnd_toStartOf="@+id/eventEndTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventDate">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventStartTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="time"
@@ -149,7 +152,7 @@
 
     <!-- Selected Last Time -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/eventLastTime"
+        android:id="@+id/eventEndTime"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="4dp"
@@ -159,10 +162,11 @@
         app:endIconDrawable="@drawable/ic_last_time"
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/eventFirstTime"
+        app:layout_constraintStart_toEndOf="@+id/eventStartTime"
         app:layout_constraintTop_toBottomOf="@+id/eventDate">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventEndTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="time"
@@ -178,9 +182,10 @@
         app:cardBackgroundColor="#FEFEFE"
         app:cardCornerRadius="16dp"
         app:cardElevation="6dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventFirstTime">
+        app:layout_constraintTop_toBottomOf="@+id/eventStartTime">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -256,6 +261,28 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customerEditButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:hint="Müşteri bilgilerini ekle"
+        app:boxBackgroundColor="@color/white"
+        app:endIconDrawable="@drawable/ic_edit"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customerProfileCardView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/customerEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/eventLocation"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -266,14 +293,17 @@
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customerProfileCardView">
+        app:layout_constraintTop_toBottomOf="@+id/customerEditButton">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventLocationEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
     <Button
@@ -289,6 +319,5 @@
         app:layout_constraintTop_toBottomOf="@id/eventLocation">
 
     </Button>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,9 @@
 package com.example.eventflow.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eventflow.Event
+import com.example.eventflow.models.Event
 import com.example.eventflow.databinding.RecyclerRowBinding
 
 class EventAdapter :
@@ -44,8 +43,8 @@ class EventAdapter :
             eventTitle.text = event.title
             eventDescription.text = event.description
             dateTextView.text = event.prettyDate
-            firstDateTextView.text = event.firstTime
-            lastDateTextView.text = event.lastTime
+            firstDateTextView.text = event.startTime
+            lastDateTextView.text = event.endTime
         }
     }
 

@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/eventDetailFragment"
-        android:name="com.example.eventflow.ui.detail.EventDetailFragment"
+        android:name="com.example.eventflow.ui.event.EventDetailFragment"
         android:label="fragment_event_detail"
         tools:layout="@layout/fragment_event_detail" />
 </navigation>

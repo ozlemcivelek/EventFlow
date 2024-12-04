@@ -3,11 +3,11 @@ package com.example.eventflow.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.eventflow.Event
+import com.example.eventflow.models.Event
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
+import kotlin.String
 
 class HomeViewModel : ViewModel() {
 
@@ -44,86 +44,12 @@ class HomeViewModel : ViewModel() {
             Event(
                 title = "Nişan Töreni",
                 description = description,
-                date = "DEC\n02",
-                firstTime = "18:00",
-                lastTime = "21:00"
-            ),
-            Event(
-                title = "Söz Töreni",
-                description = description,
-                date = "DEC\n03",
-                firstTime = "17:00",
-                lastTime = "20:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n13",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n02",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n02",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = date,
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n13",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n03",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = date,
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n14",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n15",
-                firstTime = "10:00",
-                lastTime = "13:00"
-            ),
-            Event(
-                title = "Workshop",
-                description = description,
-                date = "DEC\n",
-                firstTime = "10:00",
-                lastTime = "13:00"
+                category = "Kutlama",
+                date = "DEC\n04",
+                startTime = "18:00",
+                endTime = "21:00",
+                location = "Sakarya",
+                customerRef = ""
             )
         )
     }
