@@ -58,7 +58,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/customButton"
+            android:id="@+id/customDescriptionButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
@@ -77,6 +77,28 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventDescription"
+        android:layout_width="match_parent"
+        android:layout_height="124dp"
+        android:hint="Açıklama"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventTitleConstraintLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventDescriptionEditText"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:inputType="textMultiLine"
+            android:gravity="start|top"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <RadioGroup
         android:id="@+id/categoryRadioGroup"
         android:layout_width="match_parent"
@@ -84,7 +106,7 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventTitleConstraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/eventDescription">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioCelebration"
@@ -182,7 +204,7 @@
         app:cardBackgroundColor="#FEFEFE"
         app:cardCornerRadius="16dp"
         app:cardElevation="6dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventStartTime">
@@ -190,7 +212,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:padding="8dp">
 
             <!-- Profil İkonu -->
             <ImageView
@@ -213,7 +235,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:text="Özlem Bayraktar"
+                android:text="Müşteri Adı"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -227,7 +249,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:text="ozlem@email.com"
+                android:text="example@email.com"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@id/customerNameTextView"
                 app:layout_constraintStart_toStartOf="@id/customerNameTextView"
@@ -269,6 +291,7 @@
         app:boxBackgroundColor="@color/white"
         app:endIconDrawable="@drawable/ic_edit"
         app:endIconMode="custom"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customerProfileCardView">

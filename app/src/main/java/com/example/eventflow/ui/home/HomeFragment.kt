@@ -38,7 +38,10 @@ class HomeFragment : Fragment() {
 
         binding.recyclerView.adapter = eventAdapter
 
-        setFilteredEventsForDate()
+        viewModel.getEvents {
+            setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
+        }
+
         // Observe filtered Events in viewModel
         viewModel.filteredEvents.observe(viewLifecycleOwner) { filteredEvents ->
             eventAdapter.setItems(filteredEvents)

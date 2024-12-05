@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.eventflow.databinding.BottomSheetCustomerEditBinding
-import com.example.eventflow.models.Customer
+import com.example.eventflow.models.CustomerModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class CustomerEditBottomSheet : BottomSheetDialogFragment() {
@@ -13,7 +13,7 @@ class CustomerEditBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetCustomerEditBinding? = null
     private val binding get() = _binding!!
 
-    var onSaveClicked: ((Customer) -> Unit)? = null // Save callback
+    var onSaveClicked: ((CustomerModel) -> Unit)? = null // Save callback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -41,7 +41,7 @@ class CustomerEditBottomSheet : BottomSheetDialogFragment() {
             val updatedPhone = binding.phoneEditText.text.toString()
 
             onSaveClicked?.invoke(
-                Customer(
+                CustomerModel(
                     updatedName, updatedEmail, updatedPhone
                 )
             )

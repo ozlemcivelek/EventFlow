@@ -1,6 +1,6 @@
 package com.example.eventflow.models
 
-data class Event(
+data class EventModel(
     val title: String,
     val description: String,
     val category: String,

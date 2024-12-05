@@ -3,16 +3,16 @@ package com.example.eventflow.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eventflow.models.Event
+import com.example.eventflow.models.EventModel
 import com.example.eventflow.databinding.RecyclerRowBinding
 
 class EventAdapter :
     RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
-    private val eventList: MutableList<Event> = mutableListOf()
-    var onItemClicked: (Event) -> Unit = {}
+    private val eventList: MutableList<EventModel> = mutableListOf()
+    var onItemClicked: (EventModel) -> Unit = {}
 
-    fun setItems(items: List<Event>) {
+    fun setItems(items: List<EventModel>) {
         this.eventList.clear()
         this.eventList.addAll(items)
         notifyDataSetChanged()
