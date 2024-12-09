@@ -1,19 +1,15 @@
 package com.example.eventflow.ui.home
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.eventflow.adapter.EventAdapter
 import com.example.eventflow.databinding.FragmentHomeBinding
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class HomeFragment : Fragment() {
 

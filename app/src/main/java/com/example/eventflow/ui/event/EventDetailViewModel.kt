@@ -10,14 +10,22 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 class EventDetailViewModel : ViewModel() {
+    // TODO: Müşteri listesi için, view model ayağa kalktığında istek atılacak ve müşteriler bir değişkene yazılacak.
 
     private val db = FirebaseFirestore.getInstance()
-
     private val calendar by lazy {
         Calendar.getInstance()
     }
+
+    private val _customers: MutableList<CustomerModel> = mutableListOf()
+    val customers: List<CustomerModel>
+        get() = _customers
+
     private val _eventDate = MutableLiveData<String>()
     val eventDate: LiveData<String> get() = _eventDate
+
+    private val _selectedCustomer = MutableLiveData<CustomerModel>()
+    val selectedCustomer: LiveData<CustomerModel> get() = _selectedCustomer
 
     var event: EventModel = EventModel()
 
@@ -25,21 +33,20 @@ class EventDetailViewModel : ViewModel() {
         _eventDate.value = getDateFormatted()
     }
 
-    fun getDateFormatted() : String{
+    fun getDateFormatted(): String {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        return  String.format("%02d/%02d/%d", day, month + 1, year)
+        return String.format("%02d/%02d/%d", day, month + 1, year)
     }
 
     fun isDataValid(): Boolean {
         return event.title.isNotEmpty() &&
-        event.description.isNotEmpty() &&
-        event.category.isNotEmpty() &&
-        event.date.isNotEmpty() &&
-        event.startTime.isNotEmpty() &&
-        event.endTime.isNotEmpty() &&
-        event.location.isNotEmpty()
+                event.category.isNotEmpty() &&
+                event.date.isNotEmpty() &&
+                event.startTime.isNotEmpty() &&
+                event.endTime.isNotEmpty() &&
+                event.location.isNotEmpty()
     }
 
     fun setTitle(title: String) {
@@ -81,12 +88,17 @@ class EventDetailViewModel : ViewModel() {
             }
     }
 
-    fun saveCustomers(customers: CustomerModel, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    fun saveCustomers(
+        customer: CustomerModel,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
         db.collection("customers")
-            .add(customers)
+            .add(customer)
             .addOnSuccessListener {
+                _customers.add(customer)
+                selectCustomer(customer)
                 event = event.copy(customerRef = it.id)
-                Log.d("TAG", "customer ref: ${it.id}")
                 onSuccess()
             }
             .addOnFailureListener { exception ->
@@ -94,16 +106,30 @@ class EventDetailViewModel : ViewModel() {
             }
     }
 
-    fun getEvents(onSuccess: (List<EventModel>) -> Unit, onFailure: (Exception) -> Unit) {
-        db.collection("events")
+    fun getFirebaseCustomers(
+        onSuccess: (List<CustomerModel>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection("customers")
             .get()
             .addOnSuccessListener { documents ->
-                val events = documents.map { it.toObject(EventModel::class.java) }
-                onSuccess(events)
+                val customers = documents.map { it.toObject(CustomerModel::class.java) }
+                Log.d("TAG", "customers: $customers")
+                this._customers.clear()
+                this._customers.addAll(customers)
+                onSuccess(customers)
             }
             .addOnFailureListener { exception ->
                 onFailure(exception)
             }
+    }
+
+    fun selectCustomer(customer: CustomerModel) {
+        if (selectedCustomer.value == customer) return
+        _customers.forEach {
+            it.isSelected = it == customer
+        }
+        _selectedCustomer.value = customer
     }
 
     fun setEventDate(date: String) {

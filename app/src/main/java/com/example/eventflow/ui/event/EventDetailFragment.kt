@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.eventflow.databinding.FragmentEventDetailBinding
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.ui.customer.CustomerEditBottomSheet
+import com.example.eventflow.ui.customer.CustomerListBottomSheet
 import java.util.Calendar
 import kotlin.getValue
 
@@ -25,8 +27,7 @@ class EventDetailFragment : Fragment() {
     private val viewModel by viewModels<EventDetailViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentEventDetailBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -36,6 +37,20 @@ class EventDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getFirebaseCustomers(onSuccess = {
+            if (it.isEmpty()) {
+                binding.infoCardView.isVisible = true
+                binding.customerProfileCardView.isVisible = false
+                binding.emptyCustomerCardView.isVisible = false
+            } else {
+                binding.emptyCustomerCardView.isVisible = true
+                binding.infoCardView.isVisible = false
+                binding.customerProfileCardView.isVisible = false
+            }
+        }, onFailure = {
+            Toast.makeText(requireContext(), "Hata: ${it.message}", Toast.LENGTH_SHORT).show()
+        })
+
         binding.eventTitleEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setTitle(text.toString())
         }
@@ -44,6 +59,7 @@ class EventDetailFragment : Fragment() {
             viewModel.setDescription(text.toString())
         }
 
+        binding.radioCelebration.isChecked = true
         binding.categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 binding.radioCelebration.id -> viewModel.setCategory("Kutlama")
@@ -71,14 +87,13 @@ class EventDetailFragment : Fragment() {
             binding.eventDateEditText.setText(date)
         }
 
-        binding.backButton.setOnClickListener{
+        binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
         binding.eventDate.setEndIconOnClickListener {
             DatePickerDialog(requireContext()).apply {
-                setOnDateSetListener()
-                { _, selectedYear, selectedMonth, selectedDay ->
+                setOnDateSetListener() { _, selectedYear, selectedMonth, selectedDay ->
                     val formattedDate =
                         String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
                     viewModel.setEventDate(formattedDate)
@@ -86,29 +101,23 @@ class EventDetailFragment : Fragment() {
             }.show()
         }
 
-        binding.eventStartTime.setEndIconOnClickListener{
+        binding.eventStartTime.setEndIconOnClickListener {
             showTimePicker { selectedTime ->
                 binding.eventStartTimeEditText.setText(selectedTime)
             }
         }
 
-        binding.eventEndTime.setEndIconOnClickListener{
+        binding.eventEndTime.setEndIconOnClickListener {
             showTimePicker { selectedTime ->
                 binding.eventEndTimeEditText.setText(selectedTime)
             }
-        }
-
-        binding.customerEditButton.setEndIconOnClickListener {
-            customerBottomSheet()
         }
 
         binding.eventSaveButton.setOnClickListener {
             // TODO: Null ve empty kontrollerini yap
             if (!viewModel.isDataValid()) {
                 Toast.makeText(
-                    requireContext(),
-                    "Eksik alanlar var, kontrol et",
-                    Toast.LENGTH_SHORT
+                    requireContext(), "Eksik alanlar var, kontrol et", Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }
@@ -123,30 +132,37 @@ class EventDetailFragment : Fragment() {
             })
         }
 
-        binding.customDescriptionButton.setOnClickListener{
+        binding.customDescriptionButton.setOnClickListener {
             binding.eventDescription.visibility = View.VISIBLE
+            binding.customDescriptionButton.visibility = View.GONE
         }
 
-        binding.editIconImageView.setOnClickListener{
-            customerBottomSheet()
+        binding.customerAddTextView.setOnClickListener {
+            customerEditBottomSheet()
+        }
+
+        binding.customerProfileCardView.setOnClickListener {
+            customerListBottomSheet()
+        }
+
+        binding.emptyCustomerCardView.setOnClickListener {
+            customerListBottomSheet()
+        }
+
+        viewModel.selectedCustomer.observe(viewLifecycleOwner) {
+            customerCardView(it)
         }
     }
 
-    private fun customerBottomSheet(){
+    private fun customerEditBottomSheet() {
         val bottomSheet = CustomerEditBottomSheet.Companion.newInstance()
         bottomSheet.onSaveClicked = { customer ->
             viewModel.saveCustomers(customer, onSuccess = {
-                Toast.makeText(requireContext(), "Müşteri bilgileri eklendi", Toast.LENGTH_SHORT)
-                    .show()
-                customerCardView(customer)
 
             }, onFailure = { exception ->
                 Toast.makeText(
-                    requireContext(),
-                    "Hata: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                    requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT
+                ).show()
             })
 
         }
@@ -154,8 +170,19 @@ class EventDetailFragment : Fragment() {
         bottomSheet.show(parentFragmentManager, "CustomerEditBottomSheet")
     }
 
-    private fun customerCardView(customer: CustomerModel){
+    private fun customerListBottomSheet() {
+        CustomerListBottomSheet(
+            customerList = viewModel.customers,
+            onItemClick = { selectedCustomer ->
+                viewModel.selectCustomer(selectedCustomer)
+            }
+        ).show(parentFragmentManager, "CustomerListBottomSheet")
+    }
+
+    private fun customerCardView(customer: CustomerModel) {
         binding.customerProfileCardView.visibility = View.VISIBLE
+        binding.emptyCustomerCardView.isVisible = false
+        binding.infoCardView.isVisible = false
         binding.customerEditButton.visibility = View.GONE
         binding.customerNameTextView.text = customer.name
         binding.emailTextView.text = customer.email
@@ -172,4 +199,5 @@ class EventDetailFragment : Fragment() {
             onTimeSelected(formattedTime)
         }, hour, minute, true).show()
     }
+
 }

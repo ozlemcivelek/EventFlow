@@ -32,17 +32,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/eventSubTitle1"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Etkinlik Bilgileri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/eventTitleConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/backButton">
+        app:layout_constraintTop_toBottomOf="@+id/eventSubTitle1">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/eventTitle"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="24dp"
             android:hint="Etkinlik Adı"
             app:boxBackgroundColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +72,7 @@
             android:id="@+id/customDescriptionButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="34dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:paddingHorizontal="12dp"
@@ -90,10 +101,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventDescriptionEditText"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:inputType="textMultiLine"
+            android:layout_height="match_parent"
             android:gravity="start|top"
+            android:inputType="textMultiLine"
             android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -195,19 +206,51 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Customer Info -->
+    <!-- Event Location -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventLocation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:hint="Etkinlik konumunu giriniz"
+        app:boxBackgroundColor="@color/white"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventStartTime">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventLocationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvCustomerSection"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Müşteri Bilgileri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventLocation" />
+
+    <!-- Selected Customer CardView -->
     <androidx.cardview.widget.CardView
         android:id="@+id/customerProfileCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
         app:cardBackgroundColor="#FEFEFE"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="6dp"
-        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventStartTime">
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -217,8 +260,8 @@
             <!-- Profil İkonu -->
             <ImageView
                 android:id="@+id/profileImageView"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="Profile Picture"
@@ -239,9 +282,9 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/editIconImageView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/profileImageView"
-                app:layout_constraintTop_toTopOf="@id/profileImageView" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- E-posta Bilgisi -->
             <TextView
@@ -267,20 +310,143 @@
                 app:layout_constraintStart_toStartOf="@id/customerNameTextView"
                 app:layout_constraintTop_toBottomOf="@id/emailTextView" />
 
-            <!-- Düzenleme İkonu -->
             <ImageView
-                android:id="@+id/editIconImageView"
+                android:id="@+id/customerSelectedDropdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="Edit Icon"
-                android:src="@drawable/ic_edit"
-                app:layout_constraintBottom_toTopOf="@id/customerNameTextView"
+                android:src="@drawable/ic_dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/icon_color" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <!-- Customer Info CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/infoCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#FEFEFE"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:id="@+id/infoImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Henüz müşteriniz bulunmamaktadır."
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/infoImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Customer Info CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/emptyCustomerCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#FEFEFE"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="Önceki müşterilerden seç ya da yeni müşteri ekle"
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/ic_info"
+                app:drawableTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customerSelectedDropdownMenu"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text="Müşteri Seçiniz"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/customerSelectionBarrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="customerSelectedDropdownMenu, infoCardView,customerProfileCardView, emptyCustomerCardView" />
+
+    <TextView
+        android:id="@+id/customerAddTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_add_circle"
+        android:drawablePadding="4dp"
+        android:drawableTint="@color/black"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="2dp"
+        android:text="Yeni Müşteri Ekle"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customerSelectionBarrier" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/customerEditButton"
@@ -288,10 +454,10 @@
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
         android:hint="Müşteri bilgilerini ekle"
+        android:visibility="gone"
         app:boxBackgroundColor="@color/white"
         app:endIconDrawable="@drawable/ic_edit"
         app:endIconMode="custom"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customerProfileCardView">
@@ -304,42 +470,18 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/eventLocation"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:hint="Etkinlik konumunu giriniz"
-        app:boxBackgroundColor="@color/white"
-        app:endIconDrawable="@drawable/ic_location"
-        app:endIconMode="custom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customerEditButton">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/eventLocationEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
+    <!-- Save Event -->
     <Button
         android:id="@id/eventSaveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:text="ETKİNLİĞİ KAYDET"
         android:textColor="@color/white"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/eventLocation">
+        app:layout_constraintStart_toStartOf="parent">
 
     </Button>
 
