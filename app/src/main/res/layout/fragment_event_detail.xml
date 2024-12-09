@@ -168,6 +168,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:hint="Başlangıç"
+        app:errorEnabled="true"
         app:boxBackgroundColor="@color/white"
         app:endIconDrawable="@drawable/ic_first_time"
         app:endIconMode="custom"
@@ -179,7 +180,8 @@
             android:id="@+id/eventStartTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="time"
+            android:inputType="number"
+            android:maxLength="5"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,7 +204,8 @@
             android:id="@+id/eventEndTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="time"
+            android:inputType="number"
+            android:maxLength="5"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 

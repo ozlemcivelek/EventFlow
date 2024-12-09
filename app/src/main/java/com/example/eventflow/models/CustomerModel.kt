@@ -1,6 +1,7 @@
 package com.example.eventflow.models
 
 data class CustomerModel(
+    var customerRef: String = "",
     val name: String = "",
     val email: String = "",
     val phone: String = "",

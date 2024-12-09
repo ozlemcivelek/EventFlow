@@ -1,6 +1,5 @@
 package com.example.eventflow.ui.event
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,7 +41,6 @@ class EventDetailViewModel : ViewModel() {
 
     fun isDataValid(): Boolean {
         return event.title.isNotEmpty() &&
-                event.category.isNotEmpty() &&
                 event.date.isNotEmpty() &&
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
@@ -96,8 +94,8 @@ class EventDetailViewModel : ViewModel() {
         db.collection("customers")
             .add(customer)
             .addOnSuccessListener {
-                _customers.add(customer)
-                selectCustomer(customer)
+                _customers.add(customer) // TODO: Burada sadece listeye eklendiği için veri tabanında customerRef değerini almıyor.
+                selectCustomer(customer) // TODO: Event içindeki customerRef i bulup onun id si eklenecek.
                 event = event.copy(customerRef = it.id)
                 onSuccess()
             }
@@ -113,10 +111,13 @@ class EventDetailViewModel : ViewModel() {
         db.collection("customers")
             .get()
             .addOnSuccessListener { documents ->
-                val customers = documents.map { it.toObject(CustomerModel::class.java) }
-                Log.d("TAG", "customers: $customers")
-                this._customers.clear()
-                this._customers.addAll(customers)
+                val customers = documents.map {
+                    val customer = it.toObject(CustomerModel::class.java)
+                    customer.customerRef = it.id
+                    customer
+                }
+                _customers.clear()
+                _customers.addAll(customers)
                 onSuccess(customers)
             }
             .addOnFailureListener { exception ->
@@ -126,6 +127,7 @@ class EventDetailViewModel : ViewModel() {
 
     fun selectCustomer(customer: CustomerModel) {
         if (selectedCustomer.value == customer) return
+        event = event.copy(customerRef = customer.customerRef)
         _customers.forEach {
             it.isSelected = it == customer
         }

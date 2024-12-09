@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -60,6 +61,7 @@ class EventDetailFragment : Fragment() {
         }
 
         binding.radioCelebration.isChecked = true
+        viewModel.setCategory("Kutlama")
         binding.categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 binding.radioCelebration.id -> viewModel.setCategory("Kutlama")
@@ -72,10 +74,12 @@ class EventDetailFragment : Fragment() {
         }
 
         binding.eventStartTimeEditText.doOnTextChanged { text, _, _, _ ->
+            timeFormat(text.toString(), binding.eventStartTimeEditText)
             viewModel.setStartTime(text.toString())
         }
 
         binding.eventEndTimeEditText.doOnTextChanged { text, _, _, _ ->
+            timeFormat(text.toString(), binding.eventEndTimeEditText)
             viewModel.setEndTime(text.toString())
         }
 
@@ -198,6 +202,21 @@ class EventDetailFragment : Fragment() {
             val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
             onTimeSelected(formattedTime)
         }, hour, minute, true).show()
+    }
+
+    private fun timeFormat(time: String, editText: EditText){
+        val input = time?.replace(":", "") ?: ""
+        if (input.length <= 4) {
+            val formatted = when {
+                input.length >= 3 -> "${input.substring(0, 2)}:${input.substring(2)}"
+                input.length >= 2 -> "${input.substring(0, 2)}:"
+                else -> input
+            }
+            if (formatted != time) {
+                editText.setText(formatted)
+                editText.setSelection(formatted.length)
+            }
+        }
     }
 
 }
