@@ -11,10 +11,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.eventflow.databinding.FragmentEventDetailBinding
 import com.example.eventflow.models.CustomerModel
+import com.example.eventflow.ui.SharedViewModel
 import com.example.eventflow.ui.customer.CustomerEditBottomSheet
 import com.example.eventflow.ui.customer.CustomerListBottomSheet
 import java.util.Calendar
@@ -26,6 +28,7 @@ class EventDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<EventDetailViewModel>()
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -70,7 +73,40 @@ class EventDetailFragment : Fragment() {
         }
 
         binding.eventDateEditText.doOnTextChanged { text, _, _, _ ->
+            val input = text.toString()?.replace("/", "") ?: ""
+            if (input.length <= 8) {
+                val formatted = when {
+                    input.length >= 5 -> "${input.substring(0, 2)}/${input.substring(2, 4)}/${input.substring(4)}"
+                    input.length >= 3 -> "${input.substring(0, 2)}/${input.substring(2)}"
+                    input.isNotEmpty() -> input
+                    else -> ""
+                }
+                if (formatted != text.toString()) {
+                    binding.eventDateEditText.setText(formatted)
+                    binding.eventDateEditText.setSelection(formatted.length)
+                }
+            }
+
             viewModel.setDate(text.toString())
+        }
+
+        viewModel.eventDate.observe(viewLifecycleOwner) { date ->
+            binding.eventDateEditText.setText(date)
+        }
+
+        binding.eventDate.setEndIconOnClickListener {
+            DatePickerDialog(requireContext()).apply {
+                setOnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                    val formattedDate =
+                        String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
+                    viewModel.setEventDate(formattedDate)
+                }
+                updateDate(
+                    viewModel.calendar.get(Calendar.YEAR),
+                    viewModel.calendar.get(Calendar.MONTH),
+                    viewModel.calendar.get(Calendar.DAY_OF_MONTH)
+                )
+            }.show()
         }
 
         binding.eventStartTimeEditText.doOnTextChanged { text, _, _, _ ->
@@ -87,23 +123,10 @@ class EventDetailFragment : Fragment() {
             viewModel.setLocation(text.toString())
         }
 
-        viewModel.eventDate.observe(viewLifecycleOwner) { date ->
-            binding.eventDateEditText.setText(date)
-        }
-
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        binding.eventDate.setEndIconOnClickListener {
-            DatePickerDialog(requireContext()).apply {
-                setOnDateSetListener() { _, selectedYear, selectedMonth, selectedDay ->
-                    val formattedDate =
-                        String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
-                    viewModel.setEventDate(formattedDate)
-                }
-            }.show()
-        }
 
         binding.eventStartTime.setEndIconOnClickListener {
             showTimePicker { selectedTime ->
@@ -156,6 +179,9 @@ class EventDetailFragment : Fragment() {
         viewModel.selectedCustomer.observe(viewLifecycleOwner) {
             customerCardView(it)
         }
+
+        viewModel.setCalendarTime(sharedViewModel.calendarTime)
+
     }
 
     private fun customerEditBottomSheet() {
@@ -204,7 +230,7 @@ class EventDetailFragment : Fragment() {
         }, hour, minute, true).show()
     }
 
-    private fun timeFormat(time: String, editText: EditText){
+    private fun timeFormat(time: String, editText: EditText) {
         val input = time?.replace(":", "") ?: ""
         if (input.length <= 4) {
             val formatted = when {

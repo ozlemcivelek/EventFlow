@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.eventflow.adapter.EventAdapter
 import com.example.eventflow.databinding.FragmentHomeBinding
+import com.example.eventflow.ui.SharedViewModel
 import java.util.Calendar
 
 class HomeFragment : Fragment() {
@@ -19,6 +21,7 @@ class HomeFragment : Fragment() {
     private val eventAdapter = EventAdapter()
 
     private val viewModel by viewModels<HomeViewModel>()
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +57,7 @@ class HomeFragment : Fragment() {
             val preparedDate = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
             }
+            sharedViewModel.setCalendarTime(preparedDate.timeInMillis)
             viewModel.filterEventsByDate(preparedDate.timeInMillis)
         }
     }

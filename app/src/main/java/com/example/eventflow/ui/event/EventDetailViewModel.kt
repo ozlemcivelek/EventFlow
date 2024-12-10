@@ -12,7 +12,7 @@ class EventDetailViewModel : ViewModel() {
     // TODO: Müşteri listesi için, view model ayağa kalktığında istek atılacak ve müşteriler bir değişkene yazılacak.
 
     private val db = FirebaseFirestore.getInstance()
-    private val calendar by lazy {
+    val calendar by lazy {
         Calendar.getInstance()
     }
 
@@ -28,8 +28,9 @@ class EventDetailViewModel : ViewModel() {
 
     var event: EventModel = EventModel()
 
-    init {
-        _eventDate.value = getDateFormatted()
+    fun setCalendarTime(time: Long) {
+        calendar.timeInMillis = time
+        setEventDate(getDateFormatted())
     }
 
     fun getDateFormatted(): String {
