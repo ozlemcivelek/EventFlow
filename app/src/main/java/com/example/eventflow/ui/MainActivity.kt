@@ -1,6 +1,7 @@
 package com.example.eventflow.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.example.eventflow.BaseProgress
@@ -19,12 +20,25 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        /*val navHostFragment =
+        val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController*/
+        val navController = navHostFragment.navController
+
+        binding.fab.setOnClickListener {
+            navController.navigate(R.id.eventDetailFragment)
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.eventDetailFragment) {
+                binding.bottomAppBar.visibility = View.GONE
+                binding.fab.visibility = View.GONE
+            } else {
+                binding.bottomAppBar.visibility = View.VISIBLE
+                binding.fab.visibility = View.VISIBLE
+            }
+        }
 
     }
-
 
     fun showProgress() {
         BaseProgress().apply {

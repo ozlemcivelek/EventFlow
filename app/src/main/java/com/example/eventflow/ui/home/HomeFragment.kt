@@ -1,17 +1,17 @@
 package com.example.eventflow.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.eventflow.adapter.EventAdapter
 import com.example.eventflow.databinding.FragmentHomeBinding
-import java.text.SimpleDateFormat
+import com.example.eventflow.ui.SharedViewModel
 import java.util.Calendar
-import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
     private val eventAdapter = EventAdapter()
 
     private val viewModel by viewModels<HomeViewModel>()
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,29 +37,8 @@ class HomeFragment : Fragment() {
 
         binding.recyclerView.adapter = eventAdapter
 
-        setFilteredEventsForDate()
-    }
-
-    private fun setFilteredEventsForDate() {
-        val calendarView: CalendarView = binding.calendarView
-        // initial Date and Filtered
-        val initialCalendar = Calendar.getInstance()
-        initialCalendar.timeInMillis = calendarView.date
-        val initialMonth = SimpleDateFormat("MMM", Locale.ENGLISH).format(initialCalendar.time).uppercase()
-        val initialDay = String.format("%02d", initialCalendar.get(Calendar.DAY_OF_MONTH))
-        val initialDate = "$initialMonth\n$initialDay"
-
-        viewModel.filterEventsByDate(initialDate)
-
-        // CalendarView filter on date change
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-
-            val selectedMonth = SimpleDateFormat("MMM", Locale.ENGLISH).format(Calendar.getInstance().apply {
-                set(year, month, dayOfMonth)
-            }.time).uppercase()
-
-            val selectedDate = "$selectedMonth\n${String.format("%02d", dayOfMonth)}"
-            viewModel.filterEventsByDate(selectedDate)
+        viewModel.getEvents {
+            setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
         }
 
         // Observe filtered Events in viewModel
@@ -67,7 +47,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setFilteredEventsForDate() {
+        val calendarView: CalendarView = binding.calendarView
 
+        // initial Date and Filtered
+        viewModel.filterEventsByDate(calendarView.date)
+        // CalendarView filter on date change
+        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val preparedDate = Calendar.getInstance().apply {
+                set(year, month, dayOfMonth)
+            }
+            sharedViewModel.setCalendarTime(preparedDate.timeInMillis)
+            viewModel.filterEventsByDate(preparedDate.timeInMillis)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

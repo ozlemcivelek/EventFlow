@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dusty_white"
+    android:paddingHorizontal="24dp"
+    tools:context=".ui.event.EventDetailFragment">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary" />
+
+    <TextView
+        android:id="@+id/pageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="YENİ ETKİNLİK"
+        android:textColor="@color/primary"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/eventSubTitle1"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Etkinlik Bilgileri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/eventTitleConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/eventSubTitle1">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/eventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:hint="Etkinlik Adı"
+            app:boxBackgroundColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eventTitleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/customDescriptionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="12dp"
+            android:text="Açıklama Ekle"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:backgroundTint="@color/dusty_white"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventDescription"
+        android:layout_width="match_parent"
+        android:layout_height="124dp"
+        android:hint="Açıklama"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventTitleConstraintLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <RadioGroup
+        android:id="@+id/categoryRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventDescription">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioCelebration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Kutlama"
+            android:textSize="12sp" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioWorkshop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Atölye"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+    <!-- Selected Date -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventDate"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:hint="Tarih"
+        app:boxBackgroundColor="@color/white"
+        app:endIconDrawable="@drawable/ic_date"
+        app:endIconMode="custom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categoryRadioGroup">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="10"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Selected First Time -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventStartTime"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:hint="Başlangıç"
+        app:errorEnabled="true"
+        app:boxBackgroundColor="@color/white"
+        app:endIconDrawable="@drawable/ic_first_time"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toStartOf="@+id/eventEndTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventDate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventStartTimeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="5"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Selected Last Time -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventEndTime"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:hint="Bitiş"
+        app:boxBackgroundColor="@color/white"
+        app:endIconDrawable="@drawable/ic_last_time"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/eventStartTime"
+        app:layout_constraintTop_toBottomOf="@+id/eventDate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventEndTimeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="5"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Event Location -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventLocation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:hint="Etkinlik konumunu giriniz"
+        app:boxBackgroundColor="@color/white"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventStartTime">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventLocationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvCustomerSection"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Müşteri Bilgileri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventLocation" />
+
+    <!-- Selected Customer CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/customerProfileCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#FEFEFE"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Profil İkonu -->
+            <ImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Profile Picture"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_cardview_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/icon_color" />
+
+            <!-- Müşteri Adı ve Soyadı -->
+            <TextView
+                android:id="@+id/customerNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="Müşteri Adı"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/profileImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- E-posta Bilgisi -->
+            <TextView
+                android:id="@+id/emailTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="example@email.com"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/customerNameTextView"
+                app:layout_constraintStart_toStartOf="@id/customerNameTextView"
+                app:layout_constraintTop_toBottomOf="@id/customerNameTextView" />
+
+            <!-- Telefon Bilgisi -->
+            <TextView
+                android:id="@+id/phoneTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="+90 111 111 11 11"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/customerNameTextView"
+                app:layout_constraintStart_toStartOf="@id/customerNameTextView"
+                app:layout_constraintTop_toBottomOf="@id/emailTextView" />
+
+            <ImageView
+                android:id="@+id/customerSelectedDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/icon_color" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Customer Info CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/infoCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#FEFEFE"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:id="@+id/infoImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Henüz müşteriniz bulunmamaktadır."
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/infoImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Customer Info CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/emptyCustomerCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#FEFEFE"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="Önceki müşterilerden seç ya da yeni müşteri ekle"
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/ic_info"
+                app:drawableTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customerSelectedDropdownMenu"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text="Müşteri Seçiniz"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/customerSelectionBarrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="customerSelectedDropdownMenu, infoCardView,customerProfileCardView, emptyCustomerCardView" />
+
+    <TextView
+        android:id="@+id/customerAddTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_add_circle"
+        android:drawablePadding="4dp"
+        android:drawableTint="@color/black"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="2dp"
+        android:text="Yeni Müşteri Ekle"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customerSelectionBarrier" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/customerEditButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:hint="Müşteri bilgilerini ekle"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/white"
+        app:endIconDrawable="@drawable/ic_edit"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customerProfileCardView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/customerEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Save Event -->
+    <Button
+        android:id="@id/eventSaveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="ETKİNLİĞİ KAYDET"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </Button>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

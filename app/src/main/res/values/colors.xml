@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#323232</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="dusty_white">#F2F2F2</color>
+    <color name="icon_color">#44464E</color>
     <color name="primary">#FFA000</color>
     <color name="primary_a60">#99FFA000</color>
+    <color name="primary_a50">#65FFA000</color>
     <color name="primary_container">#E64A19</color>
     <color name="half_black">#40000000</color>
     <color name="primary_inactive">#FFECB3</color>
+    <color name="your_radio_button_color">#FF6200EE</color> <!-- Yuvarlak buton rengi -->
+    <color name="your_text_color">#000000</color> <!-- Metin rengi -->
+    <color name="your_background_color">#FFFFFF</color> <!-- Arka plan rengi -->
 </resources>
