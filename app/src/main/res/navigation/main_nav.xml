@@ -59,4 +59,13 @@
         android:name="com.example.eventflow.ui.account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/serviceDetailFragment"
+        android:name="com.example.eventflow.ui.service.ServiceDetailFragment"
+        android:label="fragment_service_detail"
+        tools:layout="@layout/fragment_service_detail" >
+        <action
+            android:id="@+id/action_serviceDetailFragment_to_serviceFragment"
+            app:destination="@id/serviceFragment" />
+    </fragment>
 </navigation>
