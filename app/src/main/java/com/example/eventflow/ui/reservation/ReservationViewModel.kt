@@ -103,8 +103,7 @@ class ReservationViewModel:ViewModel() {
 
         // Kalan süreyi formatla
         return if (remainingDays > 0) {
-            "$remainingDays gün"
-                    //"$remainingHours saat $remainingMinutes dakika"
+            "$remainingDays gün $remainingHours sa $remainingMinutes dk"
         } else if (remainingHours > 0) {
             "$remainingHours sa $remainingMinutes dk"
         } else {

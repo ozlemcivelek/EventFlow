@@ -42,7 +42,9 @@ class CustomerEditBottomSheet : BottomSheetDialogFragment() {
 
             onSaveClicked?.invoke(
                 CustomerModel(
-                    updatedName, updatedEmail, updatedPhone
+                    name = updatedName,
+                    email = updatedEmail,
+                    phone = updatedPhone
                 )
             )
             dismiss() // Bottom Sheet'i kapat
