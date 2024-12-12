@@ -58,7 +58,7 @@ class ReservationViewModel:ViewModel() {
                             reservationDate = event.date,
                             reservationTime = "${event.startTime} - ${event.endTime}",
                             reservationCustomerName = "Müşteri eklenmedi",
-                            remainingTime = "" // TODO: kalan süre hesaplanacak
+                            remainingTime = "Kalan süre: ${calculateRemainingTime(event.date, event.startTime)}"
                         )
                         reservations.add(reservation)
                         if (reservations.size == documents.size()) {
@@ -77,37 +77,42 @@ class ReservationViewModel:ViewModel() {
 
     fun calculateRemainingTime(eventDate: String, eventStartTime: String): String {
         // Tarih ve zaman formatı (yyyy-MM-dd HH:mm)
-        val dateFormat = SimpleDateFormat("MM/dd/yyyy HH", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH", Locale.getDefault())
 
         // Şu anki tarih ve saat
         val currentDateTime = Date()
 
-        // Event tarih ve saatini Date nesnesine dönüştür
-        val eventDateTime = dateFormat.parse("$eventDate $eventStartTime")
+        return try {
+            // Event tarih ve saatini Date nesnesine dönüştür
+            val eventDateTime = dateFormat.parse("$eventDate $eventStartTime")
 
-        // Eğer eventDateTime null ise, geçerli zaman döndür
-        if (eventDateTime == null) {
-            return "Geçerli zaman hatası"
-        }
+            // Eğer eventDateTime null ise, geçerli zaman döndür
+            if (eventDateTime == null) {
+                return "Geçerli zaman hatası"
+            }
 
-        // Kalan süreyi hesapla (ms cinsinden)
-        val remainingTimeInMillis = eventDateTime.time - currentDateTime.time
+            // Kalan süreyi hesapla (ms cinsinden)
+            val remainingTimeInMillis = eventDateTime.time - currentDateTime.time
 
-        // Eğer geçmişte bir tarihse, 0 ms döndür
-        if (remainingTimeInMillis < 0) return "Geçti"
+            // Eğer geçmişte bir tarihse, 0 ms döndür
+            if (remainingTimeInMillis < 0) return "Geçti"
 
-        // Gün, saat, dakika hesapla
-        val remainingDays = remainingTimeInMillis / (1000 * 60 * 60 * 24)
-        val remainingHours = (remainingTimeInMillis / (1000 * 60 * 60)) % 24
-        val remainingMinutes = (remainingTimeInMillis / (1000 * 60)) % 60
+            // Gün, saat, dakika hesapla
+            val remainingDays = remainingTimeInMillis / (1000 * 60 * 60 * 24)
+            val remainingHours = (remainingTimeInMillis / (1000 * 60 * 60)) % 24
+            val remainingMinutes = (remainingTimeInMillis / (1000 * 60)) % 60
 
-        // Kalan süreyi formatla
-        return if (remainingDays > 0) {
-            "$remainingDays gün $remainingHours sa $remainingMinutes dk"
-        } else if (remainingHours > 0) {
-            "$remainingHours sa $remainingMinutes dk"
-        } else {
-            "$remainingMinutes dk"
+            // Kalan süreyi formatla
+            return if (remainingDays > 0) {
+                "$remainingDays gün $remainingHours sa $remainingMinutes dk"
+            } else if (remainingHours > 0) {
+                "$remainingHours sa $remainingMinutes dk"
+            } else {
+                "$remainingMinutes dk"
+            }
+
+        }catch (e:Exception){
+            "Hatalı tarih formatı"
         }
     }
 
