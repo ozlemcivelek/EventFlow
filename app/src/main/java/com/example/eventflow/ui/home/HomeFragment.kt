@@ -37,6 +37,7 @@ class HomeFragment : Fragment() {
 
         binding.recyclerView.adapter = eventAdapter
 
+        binding.calendarView.date = sharedViewModel.calendarTime
         viewModel.getEvents {
             setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
         }
