@@ -12,7 +12,7 @@
         android:title="Hizmetler" />
 
     <item
-        android:id="@+id/eventDetailFragment"
+        android:id="@+id/add"
         android:title="Oluştur" />
 
     <item

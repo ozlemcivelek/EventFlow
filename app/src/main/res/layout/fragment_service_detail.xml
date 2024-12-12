@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dusty_white"
@@ -33,6 +33,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/pageUpdateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="HİZMETİ GÜNCELLE"
+        android:textColor="@color/primary"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="pageTitle, pageUpdateTitle" />
+
     <!-- Service Title -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/serviceTitle"
@@ -43,7 +64,7 @@
         app:boxBackgroundColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pageTitle">
+        app:layout_constraintTop_toBottomOf="@id/barrier">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/serviceTitleEditText"
@@ -83,10 +104,10 @@
         android:drawablePadding="4dp"
         android:paddingHorizontal="4dp"
         android:paddingVertical="2dp"
-        android:visibility="gone"
         android:text="Fotoğraf Ekle"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_add_circle"
         app:drawableTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,14 +128,14 @@
             android:id="@+id/servicePriceEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number"
             android:gravity="end|top"
+            android:inputType="number"
             android:text=""
             android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Save Service Button -->
+    <!-- Save Service Save Button -->
     <Button
         android:id="@+id/serviceSaveButton"
         android:layout_width="match_parent"
@@ -123,6 +144,22 @@
         android:text="HİZMETİ KAYDET"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </Button>
+
+    <!-- Save Service Update Button -->
+    <Button
+        android:id="@+id/serviceUpdateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="HİZMETİ GÜNCELLE"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.eventflow.adapter.ServiceAdapter
 import com.example.eventflow.databinding.FragmentServiceBinding
 import kotlin.getValue
@@ -16,7 +18,7 @@ class ServiceFragment : Fragment() {
     private var _binding: FragmentServiceBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<ServiceViewModel>()
+    private val viewModel by activityViewModels<ServiceViewModel>()
 
     val serviceAdapter = ServiceAdapter()
 
@@ -39,6 +41,7 @@ class ServiceFragment : Fragment() {
 
         binding.serviceListRecyclerView.adapter = serviceAdapter
 
+        viewModel.selectItem(null)
         viewModel.getServices(
             onSuccess = {
             serviceAdapter.setItems(it)
@@ -52,8 +55,10 @@ class ServiceFragment : Fragment() {
             viewModel.deleteService(service.serviceId ?: "")
             serviceAdapter.removeItem(service)
         }
-        serviceAdapter.onEditClicked = {
-            //Her bir hizmete tıkladığında yapılacak işlemler
+        serviceAdapter.onEditClicked = { service ->
+            viewModel.selectItem(service)
+            val action = ServiceFragmentDirections.actionServiceFragmentToServiceDetailFragment()
+            findNavController().navigate(action)
         }
     }
 

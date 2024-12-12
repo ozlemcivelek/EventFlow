@@ -2,6 +2,7 @@ package com.example.eventflow.ui.service
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.eventflow.models.ServiceModel
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,6 +20,13 @@ class ServiceViewModel: ViewModel() {
         get() = _serviceId
 
     var service: ServiceModel = ServiceModel()
+
+    private val _selectedItem = MutableLiveData<ServiceModel?>(null)
+    val selectedItem: LiveData<ServiceModel?> get() = _selectedItem
+
+    fun selectItem(service: ServiceModel?) {
+        _selectedItem.value = service
+    }
 
     fun isDataValid(): Boolean {
         return service.serviceName.isNotEmpty() &&
@@ -80,6 +88,25 @@ class ServiceViewModel: ViewModel() {
             }
             .addOnFailureListener { exception ->
                 Log.w("Firestore", "Belge silinirken hata oluştu.", exception)
+            }
+    }
+
+    fun updateService(updatedService: ServiceModel, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val serviceId = _selectedItem.value?.serviceId ?: ""
+        db.collection("services").document(serviceId)
+            .set(updatedService)
+            .addOnSuccessListener {
+                // Listedeki ilgili servisi güncelle
+                val index = _services.indexOfFirst { it.serviceId == serviceId }
+                if (index != -1) {
+                    _services[index] = updatedService
+                }
+                onSuccess()
+                Log.d("Firestore", "Belge başarıyla güncellendi.")
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+                Log.w("Firestore", "Belge güncellenirken hata oluştu.", exception)
             }
     }
 
