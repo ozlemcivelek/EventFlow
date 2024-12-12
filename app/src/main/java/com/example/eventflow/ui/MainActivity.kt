@@ -2,6 +2,7 @@ package com.example.eventflow.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -25,30 +26,47 @@ class MainActivity : AppCompatActivity() {
         createBottomNavigationBar()
     }
 
-    private fun createBottomNavigationBar(){
+    private fun createBottomNavigationBar() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
-        val configuration = AppBarConfiguration( setOf(
+        val rootFragmentIds = setOf(
             R.id.homeFragment,
             R.id.serviceFragment,
-            R.id.eventDetailFragment,
             R.id.reservationFragment,
             R.id.accountFragment
-        ),
+        )
+        val configuration = AppBarConfiguration(
+            rootFragmentIds,
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
 
         NavigationUI.setupWithNavController(binding.bottomAppBar, navController, configuration)
 
         binding.fab.setOnClickListener {
-            navController.navigate(R.id.eventDetailFragment)
+            when (navController.currentDestination?.id) {
+                R.id.homeFragment -> navController.navigate(R.id.eventDetailFragment)
+                R.id.serviceFragment -> navController.navigate(R.id.serviceDetailFragment)
+
+                R.id.reservationFragment -> Toast.makeText(
+                    this,
+                    "Rezervasyon Detayı",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+
+                R.id.accountFragment -> Toast.makeText(this, "Hesap Detayı", Toast.LENGTH_SHORT)
+                    .show()
+
+                else -> Toast.makeText(this, "Diğer sayfalardan birindesin", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.eventDetailFragment) {
+            if (!rootFragmentIds.contains(destination.id)) {
                 binding.bottomAppBar.visibility = View.GONE
                 binding.fab.visibility = View.GONE
             } else {
