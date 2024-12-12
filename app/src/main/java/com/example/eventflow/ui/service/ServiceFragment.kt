@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.eventflow.adapter.ServiceAdapter
 import com.example.eventflow.databinding.FragmentServiceBinding
@@ -20,12 +19,7 @@ class ServiceFragment : Fragment() {
 
     private val viewModel by activityViewModels<ServiceViewModel>()
 
-    val serviceAdapter = ServiceAdapter()
-
-    //TODO: Service edit kısmı da olacak, fiyat , açıklama değiştirmek isterse
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val serviceAdapter = ServiceAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +43,7 @@ class ServiceFragment : Fragment() {
             Log.e("ServiceFragment", "Error fetching services: ${exception.message}")
         })
         serviceAdapter.onItemClicked = {
-            //Her bir hizmete tıkladığında yapılacak işlemler
+            //Editte de aynı seyler var gibi yapılmalı mı?
         }
         serviceAdapter.onDeleteClicked = {service ->
             viewModel.deleteService(service.serviceId ?: "")

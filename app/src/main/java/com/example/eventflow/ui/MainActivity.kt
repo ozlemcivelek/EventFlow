@@ -49,14 +49,7 @@ class MainActivity : AppCompatActivity() {
             when (navController.currentDestination?.id) {
                 R.id.homeFragment -> navController.navigate(R.id.eventDetailFragment)
                 R.id.serviceFragment -> navController.navigate(R.id.serviceDetailFragment)
-
-                R.id.reservationFragment -> Toast.makeText(
-                    this,
-                    "Rezervasyon Detayı",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-
+                R.id.reservationFragment -> navController.navigate(R.id.eventDetailFragment)
                 R.id.accountFragment -> Toast.makeText(this, "Hesap Detayı", Toast.LENGTH_SHORT)
                     .show()
 
