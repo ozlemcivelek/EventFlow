@@ -27,6 +27,7 @@ class EventDetailViewModel : ViewModel() {
     val selectedCustomer: LiveData<CustomerModel> get() = _selectedCustomer
 
     var event: EventModel = EventModel()
+    var customer: CustomerModel = CustomerModel()
 
     fun setCalendarTime(time: Long) {
         calendar.timeInMillis = time
@@ -40,12 +41,30 @@ class EventDetailViewModel : ViewModel() {
         return String.format("%02d/%02d/%d", day, month + 1, year)
     }
 
-    fun isDataValid(): Boolean {
+    fun isDataEventValid(): Boolean {
         return event.title.isNotEmpty() &&
                 event.date.isNotEmpty() &&
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
                 event.location.isNotEmpty()
+    }
+
+    fun isDataCustomerValid(): Boolean {
+        return customer.name.isNotEmpty() &&
+                customer.email.isNotEmpty() &&
+                customer.phone.isNotEmpty()
+    }
+
+    fun setCustomerName(name: String){
+        customer = customer.copy(name = name)
+    }
+
+    fun setCustomerEmail(email: String){
+        customer = customer.copy(email = email)
+    }
+
+    fun setCustomerPhone(phone: String){
+        customer = customer.copy(phone = phone)
     }
 
     fun setTitle(title: String) {

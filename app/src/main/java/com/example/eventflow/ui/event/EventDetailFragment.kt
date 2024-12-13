@@ -142,7 +142,7 @@ class EventDetailFragment : Fragment() {
 
         binding.eventSaveButton.setOnClickListener {
             // TODO: Null ve empty kontrollerini yap
-            if (!viewModel.isDataValid()) {
+            if (!viewModel.isDataEventValid()) {
                 Toast.makeText(
                     requireContext(), "Eksik alanlar var, kontrol et", Toast.LENGTH_SHORT
                 ).show()
