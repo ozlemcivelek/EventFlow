@@ -46,7 +46,8 @@ class EventDetailViewModel : ViewModel() {
                 event.date.isNotEmpty() &&
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
-                event.location.isNotEmpty()
+                event.location.isNotEmpty()&&
+                selectedCustomer.value != null
     }
 
     fun isDataCustomerValid(): Boolean {
@@ -114,6 +115,7 @@ class EventDetailViewModel : ViewModel() {
         db.collection("customers")
             .add(customer)
             .addOnSuccessListener {
+                _selectedCustomer.value = customer
                 _customers.add(customer) // TODO: Burada sadece listeye eklendiği için veri tabanında customerRef değerini almıyor.
                 selectCustomer(customer) // TODO: Event içindeki customerRef i bulup onun id si eklenecek.
                 event = event.copy(customerRef = it.id)
