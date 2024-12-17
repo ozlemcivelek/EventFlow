@@ -27,6 +27,7 @@ class EventDetailViewModel : ViewModel() {
     val selectedCustomer: LiveData<CustomerModel> get() = _selectedCustomer
 
     var event: EventModel = EventModel()
+    var customer: CustomerModel = CustomerModel()
 
     fun setCalendarTime(time: Long) {
         calendar.timeInMillis = time
@@ -40,12 +41,32 @@ class EventDetailViewModel : ViewModel() {
         return String.format("%02d/%02d/%d", day, month + 1, year)
     }
 
-    fun isDataValid(): Boolean {
+    fun isDataEventValid(): Boolean {
         return event.title.isNotEmpty() &&
                 event.date.isNotEmpty() &&
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
-                event.location.isNotEmpty()
+                event.location.isNotEmpty()&&
+                selectedCustomer.value != null&&
+                event.serviceList?.isNotEmpty() == true
+    }
+
+    fun isDataCustomerValid(): Boolean {
+        return customer.name.isNotEmpty() &&
+                customer.email.isNotEmpty() &&
+                customer.phone.isNotEmpty()
+    }
+
+    fun setCustomerName(name: String){
+        customer = customer.copy(name = name)
+    }
+
+    fun setCustomerEmail(email: String){
+        customer = customer.copy(email = email)
+    }
+
+    fun setCustomerPhone(phone: String){
+        customer = customer.copy(phone = phone)
     }
 
     fun setTitle(title: String) {
@@ -76,10 +97,15 @@ class EventDetailViewModel : ViewModel() {
         event = event.copy(location = location)
     }
 
+    fun setServices(services: List<String>) {
+        event = event.copy(serviceList = services)
+    }
+
     fun saveEvent(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("events")
             .add(event)
             .addOnSuccessListener {
+
                 onSuccess()
             }
             .addOnFailureListener { exception ->
@@ -95,6 +121,7 @@ class EventDetailViewModel : ViewModel() {
         db.collection("customers")
             .add(customer)
             .addOnSuccessListener {
+                _selectedCustomer.value = customer
                 _customers.add(customer) // TODO: Burada sadece listeye eklendiği için veri tabanında customerRef değerini almıyor.
                 selectCustomer(customer) // TODO: Event içindeki customerRef i bulup onun id si eklenecek.
                 event = event.copy(customerRef = it.id)

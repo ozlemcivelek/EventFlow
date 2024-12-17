@@ -75,7 +75,8 @@ class ServiceDetailFragment : Fragment() {
             }
 
             viewModel.saveServices(onSuccess = {
-                actionServiceDetailFragmentToServiceFragment()
+                //actionServiceDetailFragmentToServiceFragment()
+                findNavController().popBackStack()
                 Toast.makeText(requireContext(), "Hizmet kaydedildi", Toast.LENGTH_SHORT).show()
             }, onFailure = { exception ->
                 Toast.makeText(requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT)

@@ -9,6 +9,7 @@ data class EventModel(
     val endTime: String,
     val location: String,
     var customerRef: String? = null,
+    var serviceList: List<String>? = null,
 ) {
     constructor() : this("", "", "", "", "", "", "")
 
