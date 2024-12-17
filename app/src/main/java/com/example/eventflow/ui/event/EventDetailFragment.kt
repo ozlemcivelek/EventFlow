@@ -67,6 +67,9 @@ class EventDetailFragment : Fragment() {
         }
 
         addChips()
+        binding.serviceAddTextView.setOnClickListener{
+            findNavController().navigate(R.id.serviceDetailFragment)
+        }
 
         binding.eventDescriptionEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setDescription(text.toString())
@@ -207,9 +210,9 @@ class EventDetailFragment : Fragment() {
                 if (it.isEmpty()) {
                     binding.chipGroupScrollView.isVisible = false
                     binding.serviceTitle.isVisible = false
+                    binding.serviceAddTextView.isVisible = true
                 }
                 it.forEach { service ->
-                    // Hizmet yok ise  ne olmalı boş
                     val chip = Chip(requireContext()).apply {
                         text = service.serviceName
                         chipBackgroundColor = ContextCompat.getColorStateList(
@@ -249,8 +252,6 @@ class EventDetailFragment : Fragment() {
             })
     }
 
-
-    //seçilen chipleri event kaydedilirken kullanma
     private fun getSelectedChips(chipGroup: ChipGroup = binding.chipGroup): List<String> {
         val selectedChips = mutableListOf<String>()
         for (i in 0 until chipGroup.childCount) {

@@ -14,7 +14,7 @@ class ServiceViewModel: ViewModel() {
     var event: EventModel = EventModel()
 
     private val _services: MutableList<ServiceModel> = mutableListOf()
-    //val services: List<ServiceModel> get() = _services
+    val services: List<ServiceModel> get() = _services
 
     private var _serviceId: String? = null
     val serviceId: String?

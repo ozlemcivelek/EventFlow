@@ -87,6 +87,30 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/serviceSelectionBarrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="serviceAddTextView,chipGroupScrollView" />
+
+    <TextView
+        android:id="@+id/serviceAddTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_add_circle"
+        android:drawablePadding="4dp"
+        android:drawableTint="@color/black"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="2dp"
+        android:text="Henüz hizmet bulunmamaktadır."
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventTitleConstraintLayout"/>
+
     <TextView
         android:id="@+id/serviceTitle"
         style="@style/TextAppearance.AppCompat.Small"
@@ -116,12 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:singleLine="true">
-
-            <!-- Chips can be declared here, or added dynamically. -->
-
         </com.google.android.material.chip.ChipGroup>
-
-
     </HorizontalScrollView>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -145,7 +164,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <RadioGroup
         android:id="@+id/categoryRadioGroup"
         android:layout_width="match_parent"
@@ -153,7 +171,7 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupScrollView">
+        app:layout_constraintTop_toBottomOf="@+id/serviceSelectionBarrier">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioCelebration"
