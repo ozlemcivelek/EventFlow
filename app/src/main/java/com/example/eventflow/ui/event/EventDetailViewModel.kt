@@ -47,7 +47,8 @@ class EventDetailViewModel : ViewModel() {
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
                 event.location.isNotEmpty()&&
-                selectedCustomer.value != null
+                selectedCustomer.value != null&&
+                event.serviceList?.isNotEmpty() == true
     }
 
     fun isDataCustomerValid(): Boolean {
@@ -96,10 +97,15 @@ class EventDetailViewModel : ViewModel() {
         event = event.copy(location = location)
     }
 
+    fun setServices(services: List<String>) {
+        event = event.copy(serviceList = services)
+    }
+
     fun saveEvent(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("events")
             .add(event)
             .addOnSuccessListener {
+
                 onSuccess()
             }
             .addOnFailureListener { exception ->

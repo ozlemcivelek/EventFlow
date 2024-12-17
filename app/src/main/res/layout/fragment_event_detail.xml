@@ -87,6 +87,42 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/serviceTitle"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Hizmet Bilgileri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventTitleConstraintLayout" />
+
+
+    <HorizontalScrollView
+        android:id="@+id/chipGroupScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="4dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingVertical="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serviceTitle">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleLine="true">
+
+            <!-- Chips can be declared here, or added dynamically. -->
+
+        </com.google.android.material.chip.ChipGroup>
+
+
+    </HorizontalScrollView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/eventDescription"
@@ -117,7 +153,7 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventDescription">
+        app:layout_constraintTop_toBottomOf="@+id/chipGroupScrollView">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioCelebration"
@@ -155,8 +191,8 @@
             android:id="@+id/eventDateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:digits="0123456789"
+            android:inputType="number"
             android:maxLength="10"
             android:textSize="14sp" />
 
@@ -170,10 +206,10 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:hint="Başlangıç"
-        app:errorEnabled="true"
         app:boxBackgroundColor="@color/white"
         app:endIconDrawable="@drawable/ic_first_time"
         app:endIconMode="custom"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/eventEndTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventDate">
@@ -182,8 +218,8 @@
             android:id="@+id/eventStartTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:digits="0123456789"
+            android:inputType="number"
             android:maxLength="5"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -207,8 +243,8 @@
             android:id="@+id/eventEndTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:digits="0123456789"
+            android:inputType="number"
             android:maxLength="5"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -411,33 +447,13 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/customerSelectedDropdownMenu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        android:visibility="gone"
-        app:boxBackgroundColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCustomerSection">
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:text="Müşteri Seçiniz"
-            android:textSize="14sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/customerSelectionBarrier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="customerSelectedDropdownMenu, infoCardView,customerProfileCardView, emptyCustomerCardView" />
+        app:constraint_referenced_ids="infoCardView,customerProfileCardView, emptyCustomerCardView" />
 
     <TextView
         android:id="@+id/customerAddTextView"

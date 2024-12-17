@@ -3,22 +3,28 @@ package com.example.eventflow.ui.event
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.eventflow.R
 import com.example.eventflow.databinding.FragmentEventDetailBinding
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.ui.SharedViewModel
 import com.example.eventflow.ui.customer.CustomerEditBottomSheet
 import com.example.eventflow.ui.customer.CustomerListBottomSheet
+import com.example.eventflow.ui.service.ServiceViewModel
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import java.util.Calendar
 import kotlin.getValue
 
@@ -29,6 +35,7 @@ class EventDetailFragment : Fragment() {
 
     private val viewModel by viewModels<EventDetailViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
+    private val serviceViewModel by viewModels<ServiceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -59,6 +66,8 @@ class EventDetailFragment : Fragment() {
             viewModel.setTitle(text.toString())
         }
 
+        addChips()
+
         binding.eventDescriptionEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setDescription(text.toString())
         }
@@ -76,7 +85,13 @@ class EventDetailFragment : Fragment() {
             val input = text.toString()?.replace("/", "") ?: ""
             if (input.length <= 8) {
                 val formatted = when {
-                    input.length >= 5 -> "${input.substring(0, 2)}/${input.substring(2, 4)}/${input.substring(4)}"
+                    input.length >= 5 -> "${input.substring(0, 2)}/${
+                        input.substring(
+                            2,
+                            4
+                        )
+                    }/${input.substring(4)}"
+
                     input.length >= 3 -> "${input.substring(0, 2)}/${input.substring(2)}"
                     input.isNotEmpty() -> input
                     else -> ""
@@ -149,6 +164,7 @@ class EventDetailFragment : Fragment() {
                 return@setOnClickListener
             }
 
+
             viewModel.saveEvent(onSuccess = {
                 val action = EventDetailFragmentDirections.actionEventDetailFragmentToHomeFragment()
                 findNavController().navigate(action)
@@ -157,6 +173,7 @@ class EventDetailFragment : Fragment() {
                 Toast.makeText(requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT)
                     .show()
             })
+
         }
 
         binding.customDescriptionButton.setOnClickListener {
@@ -182,6 +199,67 @@ class EventDetailFragment : Fragment() {
 
         viewModel.setCalendarTime(sharedViewModel.calendarTime)
 
+    }
+
+    fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
+        serviceViewModel.getServices(
+            onSuccess = {
+                if (it.isEmpty()) {
+                    binding.chipGroupScrollView.isVisible = false
+                    binding.serviceTitle.isVisible = false
+                }
+                it.forEach { service ->
+                    // Hizmet yok ise  ne olmalı boş
+                    val chip = Chip(requireContext()).apply {
+                        text = service.serviceName
+                        chipBackgroundColor = ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.chip_background
+                        )
+                        setTextColor(
+                            ContextCompat.getColorStateList(
+                                requireContext(),
+                                R.color.chip_text_color
+                            )
+                        )
+                        isCheckable = true
+                    }
+
+                    chip.setOnCheckedChangeListener { buttonView, isChecked ->
+                        if (isChecked) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Seçildi: ${service.serviceName}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "Kaldırıldı: ${service.serviceName}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        viewModel.setServices(getSelectedChips())
+                    }
+
+                    chipGroup.addView(chip)
+                }
+            }, onFailure = { exception ->
+                Log.e("SERVICE CHIP HATA", "servisler çekilirken hata oluştu: ${exception.message}")
+            })
+    }
+
+
+    //seçilen chipleri event kaydedilirken kullanma
+    private fun getSelectedChips(chipGroup: ChipGroup = binding.chipGroup): List<String> {
+        val selectedChips = mutableListOf<String>()
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as Chip
+            if (chip.isChecked) {
+                selectedChips.add(chip.text.toString())
+            }
+        }
+        return selectedChips
     }
 
     private fun customerEditBottomSheet() {

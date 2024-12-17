@@ -4,16 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.eventflow.models.EventModel
 import com.example.eventflow.models.ServiceModel
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ServiceViewModel: ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
+    var event: EventModel = EventModel()
 
     private val _services: MutableList<ServiceModel> = mutableListOf()
-    val services: List<ServiceModel>
-        get() = _services
+    //val services: List<ServiceModel> get() = _services
 
     private var _serviceId: String? = null
     val serviceId: String?
@@ -50,6 +51,8 @@ class ServiceViewModel: ViewModel() {
         db.collection("services")
             .add(service)
             .addOnSuccessListener {
+                service.serviceId = it.id
+                _services.add(service)
                 onSuccess()
             }
             .addOnFailureListener { exception ->

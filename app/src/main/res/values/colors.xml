@@ -13,4 +13,8 @@
     <color name="your_radio_button_color">#FF6200EE</color> <!-- Yuvarlak buton rengi -->
     <color name="your_text_color">#000000</color> <!-- Metin rengi -->
     <color name="your_background_color">#FFFFFF</color> <!-- Arka plan rengi -->
+    <color name="selected_chip_background">#FFA000</color>
+    <color name="unselected_chip_background">#FFFFFF</color>
+    <color name="selected_chip_text">#FFFFFF</color>
+    <color name="unselected_chip_text">#000000</color>
 </resources>
