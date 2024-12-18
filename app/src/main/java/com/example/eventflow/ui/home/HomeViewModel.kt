@@ -1,14 +1,11 @@
 package com.example.eventflow.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.eventflow.common.BaseViewModel
 import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.models.EventModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

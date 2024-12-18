@@ -1,23 +1,23 @@
 package com.example.eventflow.ui.service
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.eventflow.adapter.ServiceAdapter
+import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentServiceBinding
-import kotlin.getValue
+import dagger.hilt.android.AndroidEntryPoint
 
-class ServiceFragment : Fragment() {
+@AndroidEntryPoint
+class ServiceFragment() : BaseFragment<ServiceViewModel>() {
 
     private var _binding: FragmentServiceBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by activityViewModels<ServiceViewModel>()
+    override val viewModel: ServiceViewModel by activityViewModels()
 
     private val serviceAdapter = ServiceAdapter()
 
@@ -36,16 +36,15 @@ class ServiceFragment : Fragment() {
         binding.serviceListRecyclerView.adapter = serviceAdapter
 
         viewModel.selectItem(null)
-        viewModel.getServices(
-            onSuccess = {
+        viewModel.serviceModel.observe(viewLifecycleOwner) {
             serviceAdapter.setItems(it)
-        }, onFailure = { exception ->
-            Log.e("ServiceFragment", "Error fetching services: ${exception.message}")
-        })
+        }
+        viewModel.getServices()
+
         serviceAdapter.onItemClicked = {
             //Editte de aynı seyler var gibi yapılmalı mı?
         }
-        serviceAdapter.onDeleteClicked = {service ->
+        serviceAdapter.onDeleteClicked = { service ->
             viewModel.deleteService(service.serviceId ?: "")
             serviceAdapter.removeItem(service)
         }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.eventflow.adapter.EventAdapter
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentHomeBinding
@@ -21,7 +22,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     private val eventAdapter = EventAdapter()
 
-    override val viewModelClass = HomeViewModel::class.java
+    override val viewModel: HomeViewModel by viewModels()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
@@ -68,5 +69,4 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         super.onDestroyView()
         _binding = null
     }
-
 }

@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.2"
+agp = "8.7.3"
 firebaseBom = "33.7.0"
 hiltAndroid = "2.51.1"
 kotlin = "2.1.0"
@@ -12,10 +12,10 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
-safeArgs = "2.8.4"
+safeArgs = "2.8.5"
 googleGmsGoogleServices = "4.4.2"
-navigationFragmentKtx = "2.8.4"
-navigationUiKtx = "2.8.4"
+navigationFragmentKtx = "2.8.5"
+navigationUiKtx = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

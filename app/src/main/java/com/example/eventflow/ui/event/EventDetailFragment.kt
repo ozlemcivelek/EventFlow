@@ -3,7 +3,6 @@ package com.example.eventflow.ui.event
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ import kotlin.getValue
 
 @AndroidEntryPoint
 class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
-    override val viewModelClass = EventDetailViewModel::class.java
+    override val viewModel: EventDetailViewModel by viewModels()
 
     private var _binding: FragmentEventDetailBinding? = null
     private val binding get() = _binding!!
@@ -207,51 +206,53 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
     }
 
     fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
-        serviceViewModel.getServices(
-            onSuccess = {
-                if (it.isEmpty()) {
-                    binding.chipGroupScrollView.isVisible = false
-                    binding.serviceTitle.isVisible = false
-                    binding.serviceAddTextView.isVisible = true
-                }
-                it.forEach { service ->
-                    val chip = Chip(requireContext()).apply {
-                        text = service.serviceName
-                        chipBackgroundColor = ContextCompat.getColorStateList(
+        serviceViewModel.getServices()
+        serviceViewModel.serviceModel.observe(viewLifecycleOwner) {
+            isVisibleChip(it.isEmpty())
+            it.forEach { service ->
+                val chip = Chip(requireContext()).apply {
+                    text = service.serviceName
+                    chipBackgroundColor = ContextCompat.getColorStateList(
+                        requireContext(),
+                        R.color.chip_background
+                    )
+                    setTextColor(
+                        ContextCompat.getColorStateList(
                             requireContext(),
-                            R.color.chip_background
+                            R.color.chip_text_color
                         )
-                        setTextColor(
-                            ContextCompat.getColorStateList(
-                                requireContext(),
-                                R.color.chip_text_color
-                            )
-                        )
-                        isCheckable = true
-                    }
-
-                    chip.setOnCheckedChangeListener { buttonView, isChecked ->
-                        if (isChecked) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Seçildi: ${service.serviceName}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "Kaldırıldı: ${service.serviceName}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        viewModel.setServices(getSelectedChips())
-                    }
-
-                    chipGroup.addView(chip)
+                    )
+                    isCheckable = true
                 }
-            }, onFailure = { exception ->
-                Log.e("SERVICE CHIP HATA", "servisler çekilirken hata oluştu: ${exception.message}")
-            })
+
+                chip.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Seçildi: ${service.serviceName}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Kaldırıldı: ${service.serviceName}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    viewModel.setServices(getSelectedChips())
+                }
+
+                chipGroup.addView(chip)
+            }
+        }
+    }
+
+    private fun isVisibleChip(isEmpty: Boolean){
+        if(isEmpty){
+            binding.chipGroupScrollView.isVisible = false
+            binding.serviceTitle.isVisible = false
+            binding.serviceAddTextView.isVisible = true
+        }
     }
 
     private fun getSelectedChips(chipGroup: ChipGroup = binding.chipGroup): List<String> {

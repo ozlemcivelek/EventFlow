@@ -4,6 +4,8 @@ import com.example.eventflow.database.repository.AuthRepository
 import com.example.eventflow.database.repository.AuthRepositoryImpl
 import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.database.repository.EventRepositoryImpl
+import com.example.eventflow.database.repository.ServiceRepository
+import com.example.eventflow.database.repository.ServiceRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -23,4 +25,7 @@ class AppModule {
     @Provides
     fun provideEventRepository(): EventRepository = EventRepositoryImpl()
 
+
+    @Provides
+    fun provideServiceRepository(): ServiceRepository = ServiceRepositoryImpl()
 }
