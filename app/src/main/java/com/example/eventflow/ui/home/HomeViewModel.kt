@@ -1,12 +1,12 @@
 package com.example.eventflow.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.eventflow.common.BaseViewModel
 import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.models.EventModel
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -18,15 +18,14 @@ import kotlin.String
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-) : ViewModel() {
-
-    private val db = FirebaseFirestore.getInstance()
+) : BaseViewModel() {
 
     private val calendar by lazy {
         Calendar.getInstance()
     }
 
-    private val eventsModel: MutableLiveData<List<EventModel>> = MutableLiveData(emptyList())
+    val eventsModel: MutableLiveData<List<EventModel>> = MutableLiveData()
+    private val originalList: MutableList<EventModel> = mutableListOf()
 
     private val _filteredEvents = MutableLiveData<List<EventModel>>()
     val filteredEvents: LiveData<List<EventModel>> get() = _filteredEvents
@@ -36,7 +35,7 @@ class HomeViewModel @Inject constructor(
         calendar.timeInMillis = time
         val dateFormat =
             SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.time).uppercase()
-        val filtered = getEvents().filter { it.prettyDate == dateFormat }
+        val filtered = originalList.filter { it.prettyDate == dateFormat }
         val updatedEvents = filtered.map { event ->
             event.copy(date = formatPrettyDate(event.prettyDate))
         }
@@ -50,12 +49,32 @@ class HomeViewModel @Inject constructor(
         return parsedDate?.let { outputFormat.format(it).uppercase() } ?: date
     }
 
-    fun getEvents(onEventsLoaded: () -> Unit = {}): List<EventModel> { //Update list
+    fun getEvents() { //Update list
         viewModelScope.launch {
-            val events = eventRepository.getAllEvents()
-            eventsModel.value = events
-            onEventsLoaded()
+            setLoading(true)
+            try {
+                val events = eventRepository.getAllEvents()
+                originalList.clear()
+                originalList.addAll(events)
+                eventsModel.value = events
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error loading events", e)
+            } finally {
+                setLoading(false)
+            }
         }
-        return eventsModel.value ?: emptyList()
+    }
+
+    fun getEvents2() {
+        sendRequest(
+            call = {
+                eventRepository.getAllEvents()
+            },
+            result = {
+                originalList.clear()
+                originalList.addAll(it)
+                eventsModel.value = it
+            }
+        )
     }
 }

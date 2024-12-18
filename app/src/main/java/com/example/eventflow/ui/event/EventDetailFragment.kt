@@ -12,11 +12,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.eventflow.R
+import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentEventDetailBinding
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.ui.SharedViewModel
@@ -30,12 +30,12 @@ import java.util.Calendar
 import kotlin.getValue
 
 @AndroidEntryPoint
-class EventDetailFragment : Fragment() {
+class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
+    override val viewModelClass = EventDetailViewModel::class.java
 
     private var _binding: FragmentEventDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<EventDetailViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
     private val serviceViewModel by viewModels<ServiceViewModel>()
 
@@ -69,7 +69,7 @@ class EventDetailFragment : Fragment() {
         }
 
         addChips()
-        binding.serviceAddTextView.setOnClickListener{
+        binding.serviceAddTextView.setOnClickListener {
             findNavController().navigate(R.id.serviceDetailFragment)
         }
 

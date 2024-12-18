@@ -2,8 +2,8 @@ package com.example.eventflow.ui.event
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.eventflow.common.BaseViewModel
 import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.models.EventModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
     private val eventRepository: EventRepository
-) : ViewModel() {
+) : BaseViewModel() {
     // TODO: Müşteri listesi için, view model ayağa kalktığında istek atılacak ve müşteriler bir değişkene yazılacak.
 
     private val db = FirebaseFirestore.getInstance()
@@ -111,12 +111,16 @@ class EventDetailViewModel @Inject constructor(
 
     fun saveEvent(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         viewModelScope.launch {
+            setLoading(true)
             val isEventSaved = eventRepository.addEvent(event)
             if (isEventSaved) {
                 onSuccess()
+                setLoading(false)
             } else {
                 onFailure(Exception("Event could not be saved"))
+                setLoading(false)
             }
+
         }
     }
 
