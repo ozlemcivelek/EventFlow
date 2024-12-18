@@ -25,23 +25,6 @@ open class BaseViewModel : ViewModel() {
         t.printStackTrace()
     }
 
-    /*
-            viewModelScope.launch {
-            setLoading(true)
-            try {
-                val events = eventRepository.getAllEvents()
-                originalList.clear()
-                originalList.addAll(events)
-                eventsModel.value = events
-            } catch (e: Exception) {
-                Log.e("HomeViewModel", "Error loading events", e)
-            } finally {
-                setLoading(false)
-            }
-        }
-     */
-
-
     private val _loadingState = MutableLiveData<Boolean>()
     val loadingState: LiveData<Boolean> get() = _loadingState
 

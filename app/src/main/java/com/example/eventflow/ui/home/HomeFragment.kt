@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
         }
 
-        viewModel.getEvents2()
+        viewModel.getEvents()
     }
 
     private fun setFilteredEventsForDate() {

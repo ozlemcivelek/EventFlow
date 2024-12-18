@@ -49,23 +49,7 @@ class HomeViewModel @Inject constructor(
         return parsedDate?.let { outputFormat.format(it).uppercase() } ?: date
     }
 
-    fun getEvents() { //Update list
-        viewModelScope.launch {
-            setLoading(true)
-            try {
-                val events = eventRepository.getAllEvents()
-                originalList.clear()
-                originalList.addAll(events)
-                eventsModel.value = events
-            } catch (e: Exception) {
-                Log.e("HomeViewModel", "Error loading events", e)
-            } finally {
-                setLoading(false)
-            }
-        }
-    }
-
-    fun getEvents2() {
+    fun getEvents() {
         sendRequest(
             call = {
                 eventRepository.getAllEvents()
