@@ -11,8 +11,10 @@ import androidx.fragment.app.viewModels
 import com.example.eventflow.adapter.EventAdapter
 import com.example.eventflow.databinding.FragmentHomeBinding
 import com.example.eventflow.ui.SharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null

@@ -3,12 +3,20 @@ package com.example.eventflow.ui.event
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.models.EventModel
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.Calendar
+import javax.inject.Inject
 
-class EventDetailViewModel : ViewModel() {
+@HiltViewModel
+class EventDetailViewModel @Inject constructor(
+    private val eventRepository: EventRepository
+) : ViewModel() {
     // TODO: Müşteri listesi için, view model ayağa kalktığında istek atılacak ve müşteriler bir değişkene yazılacak.
 
     private val db = FirebaseFirestore.getInstance()
@@ -46,8 +54,8 @@ class EventDetailViewModel : ViewModel() {
                 event.date.isNotEmpty() &&
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
-                event.location.isNotEmpty()&&
-                selectedCustomer.value != null&&
+                event.location.isNotEmpty() &&
+                selectedCustomer.value != null &&
                 event.serviceList?.isNotEmpty() == true
     }
 
@@ -57,15 +65,15 @@ class EventDetailViewModel : ViewModel() {
                 customer.phone.isNotEmpty()
     }
 
-    fun setCustomerName(name: String){
+    fun setCustomerName(name: String) {
         customer = customer.copy(name = name)
     }
 
-    fun setCustomerEmail(email: String){
+    fun setCustomerEmail(email: String) {
         customer = customer.copy(email = email)
     }
 
-    fun setCustomerPhone(phone: String){
+    fun setCustomerPhone(phone: String) {
         customer = customer.copy(phone = phone)
     }
 
@@ -102,15 +110,14 @@ class EventDetailViewModel : ViewModel() {
     }
 
     fun saveEvent(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        db.collection("events")
-            .add(event)
-            .addOnSuccessListener {
-
+        viewModelScope.launch {
+            val isEventSaved = eventRepository.addEvent(event)
+            if (isEventSaved) {
                 onSuccess()
+            } else {
+                onFailure(Exception("Event could not be saved"))
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        }
     }
 
     fun saveCustomers(

@@ -25,9 +25,11 @@ import com.example.eventflow.ui.customer.CustomerListBottomSheet
 import com.example.eventflow.ui.service.ServiceViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import kotlin.getValue
 
+@AndroidEntryPoint
 class EventDetailFragment : Fragment() {
 
     private var _binding: FragmentEventDetailBinding? = null

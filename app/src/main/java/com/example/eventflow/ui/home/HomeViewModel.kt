@@ -1,17 +1,24 @@
 package com.example.eventflow.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.models.EventModel
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 import kotlin.String
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val eventRepository: EventRepository,
+) : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -27,7 +34,8 @@ class HomeViewModel : ViewModel() {
     // Filter events by date
     fun filterEventsByDate(time: Long) {
         calendar.timeInMillis = time
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.time).uppercase()
+        val dateFormat =
+            SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.time).uppercase()
         val filtered = getEvents().filter { it.prettyDate == dateFormat }
         val updatedEvents = filtered.map { event ->
             event.copy(date = formatPrettyDate(event.prettyDate))
@@ -43,42 +51,11 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getEvents(onEventsLoaded: () -> Unit = {}): List<EventModel> { //Update list
-        getFirebaseEvents(
-            onSuccess = { events ->
-                events.map { it ->
-                     EventModel(
-                        title = it.title,
-                        description = it.description,
-                        category = it.category,
-                        date = it.prettyDate,
-                        startTime = it.startTime,
-                        endTime = it.endTime,
-                        location = it.location,
-                        customerRef = it.customerRef
-                    )
-                }
-                eventsModel.value = events
-                onEventsLoaded() //veriler yüklendikten sonra işlem yapılacak
-                Log.d("EventFilter", "Event Filtrelenmemiş: $events")
-            },
-            onFailure = { exception ->
-                // Hata durumunda bir işlem yapabilirsiniz, örn: Log veya hata mesajı gösterimi
-                Log.e("EventFilter", "Error fetching events: ${exception.message}")
-            }
-        )
-
+        viewModelScope.launch {
+            val events = eventRepository.getAllEvents()
+            eventsModel.value = events
+            onEventsLoaded()
+        }
         return eventsModel.value ?: emptyList()
-    }
-
-    private fun getFirebaseEvents(onSuccess: (List<EventModel>) -> Unit, onFailure: (Exception) -> Unit) {
-        db.collection("events")
-            .get()
-            .addOnSuccessListener { documents ->
-                val events = documents.mapNotNull { it.toObject(EventModel::class.java) }
-                onSuccess(events)
-            }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
     }
 }
