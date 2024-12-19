@@ -1,10 +1,11 @@
 package com.example.eventflow.models
 
 data class ReservationModel(
-    var reservationId: String,
-    val reservationName: String,
-    val reservationDate: String,
-    val reservationTime: String,
-    val reservationCustomerName: String,
+    var id: String,
+    val name: String,
+    val date: String,
+    val time: String,
+    val customerName: String?,
+    val customerPhone: String?,
     val remainingTime: String,
 )

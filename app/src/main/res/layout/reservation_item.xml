@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{reservation.reservationName}"
+            android:text='@{"Rezervasyon Adı: " + reservation.name}'
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{reservation.reservationDate}"
+            android:text='@{"Rezervasyon Tarihi: " + reservation.date}'
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{reservation.reservationTime}"
+            android:text='@{"Saati: " + reservation.time}'
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{reservation.reservationCustomerName}"
+            android:text='@{"Müşteri Adı: " + reservation.customerName}'
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -70,11 +70,26 @@
             tools:text="Müşteri Adı" />
 
         <TextView
+            android:id="@+id/customerPhoneNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{reservation.customerPhone}'
+            android:drawableStart="@drawable/ic_call"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/black"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reservationCustomerNameTextView"/>
+
+        <TextView
             android:id="@+id/reservationRemainingTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{reservation.remainingTime}"
+            android:text='@{"Kalan süre: " + reservation.remainingTime}'
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"

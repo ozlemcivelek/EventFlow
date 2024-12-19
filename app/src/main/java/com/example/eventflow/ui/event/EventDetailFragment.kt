@@ -49,8 +49,8 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getFirebaseCustomers(onSuccess = {
-            if (it.isEmpty()) {
+        viewModel.customerModel.observe(viewLifecycleOwner) { customer ->
+            if (customer.isEmpty()) {
                 binding.infoCardView.isVisible = true
                 binding.customerProfileCardView.isVisible = false
                 binding.emptyCustomerCardView.isVisible = false
@@ -59,9 +59,8 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
                 binding.infoCardView.isVisible = false
                 binding.customerProfileCardView.isVisible = false
             }
-        }, onFailure = {
-            Toast.makeText(requireContext(), "Hata: ${it.message}", Toast.LENGTH_SHORT).show()
-        })
+        }
+        viewModel.getCustomers()
 
         binding.eventTitleEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setTitle(text.toString())
@@ -269,14 +268,7 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
     private fun customerEditBottomSheet() {
         val bottomSheet = CustomerEditBottomSheet.Companion.newInstance()
         bottomSheet.onSaveClicked = { customer ->
-            viewModel.saveCustomers(customer, onSuccess = {
-
-            }, onFailure = { exception ->
-                Toast.makeText(
-                    requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT
-                ).show()
-            })
-
+            viewModel.addCustomer(customer)
         }
 
         bottomSheet.show(parentFragmentManager, "CustomerEditBottomSheet")
@@ -284,7 +276,7 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
 
     private fun customerListBottomSheet() {
         CustomerListBottomSheet(
-            customerList = viewModel.customers,
+            customerList = viewModel.customerModel.value!!,
             onItemClick = { selectedCustomer ->
                 viewModel.selectCustomer(selectedCustomer)
             }

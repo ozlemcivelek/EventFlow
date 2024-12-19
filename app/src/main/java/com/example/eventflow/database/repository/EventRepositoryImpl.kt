@@ -9,7 +9,6 @@ class EventRepositoryImpl : EventRepository {
 
     override suspend fun getAllEvents(): List<EventModel> {
         val result = db.collection("events").get().await()
-
         val events = result.mapNotNull { it.toObject(EventModel::class.java) }
         return events
     }

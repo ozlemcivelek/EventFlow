@@ -24,9 +24,9 @@ class ReservationAdapter: RecyclerView.Adapter<ReservationAdapter.ReservationVie
         filteredItems = if (query.isEmpty()) {
             ArrayList(reservationList)
         } else {
-            reservationList.filter {
-                it.reservationName.contains(query, ignoreCase = true) ||
-                it.reservationCustomerName.contains(query, ignoreCase = true)
+            reservationList.filter { reservation ->
+                reservation.name.contains(query, ignoreCase = true) ||
+                        reservation.customerName?.contains(query, ignoreCase = true) == true
             }.toMutableList()
         }
         notifyDataSetChanged()
