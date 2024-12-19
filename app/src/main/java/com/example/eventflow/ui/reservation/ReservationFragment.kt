@@ -1,22 +1,25 @@
 package com.example.eventflow.ui.reservation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.eventflow.adapter.ReservationAdapter
+import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentReservationBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
-class ReservationFragment : Fragment() {
+@AndroidEntryPoint
+class ReservationFragment : BaseFragment<ReservationViewModel>() {
 
     private var _binding: FragmentReservationBinding? = null
     private val binding get() = _binding!!
 
     private val reservationAdapter = ReservationAdapter()
 
-    private val viewModel by viewModels<ReservationViewModel>()
+    override val viewModel: ReservationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +35,10 @@ class ReservationFragment : Fragment() {
 
         binding.reservationListRecyclerView.adapter = reservationAdapter
 
-        viewModel.getReservations(
-            onSuccess = { reservations ->
-                reservationAdapter.submitList(reservations)
-            },
-            onFailure = { exception ->
-
-            })
+        viewModel.getReservations()
+        viewModel.reservationModel.observe(viewLifecycleOwner) {
+            reservationAdapter.submitList(it)
+        }
 
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

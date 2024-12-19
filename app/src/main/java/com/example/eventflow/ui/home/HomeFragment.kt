@@ -5,22 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.eventflow.adapter.EventAdapter
+import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentHomeBinding
 import com.example.eventflow.ui.SharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
-class HomeFragment : Fragment() {
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<HomeViewModel>() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private val eventAdapter = EventAdapter()
 
-    private val viewModel by viewModels<HomeViewModel>()
+    override val viewModel: HomeViewModel by viewModels()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
@@ -34,18 +37,24 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerView.adapter = eventAdapter
-
         binding.calendarView.date = sharedViewModel.calendarTime
-        viewModel.getEvents {
-            setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
-        }
 
+        sharedViewModel.selectedItem(null)
         // Observe filtered Events in viewModel
         viewModel.filteredEvents.observe(viewLifecycleOwner) { filteredEvents ->
             eventAdapter.setItems(filteredEvents)
         }
+        viewModel.eventsModel.observe(viewLifecycleOwner) { events ->
+            setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
+        }
+        eventAdapter.onItemClicked = { event ->
+            sharedViewModel.selectedItem(event)
+            val action = HomeFragmentDirections.actionHomeFragmentToEventDetailFragment()
+            findNavController().navigate(action)
+        }
+
+        viewModel.getEvents()
     }
 
     private fun setFilteredEventsForDate() {
@@ -67,5 +76,4 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

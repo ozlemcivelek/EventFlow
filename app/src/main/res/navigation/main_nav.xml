@@ -34,7 +34,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.eventflow.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_eventDetailFragment"
+            app:destination="@id/eventDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"
         android:name="com.example.eventflow.ui.event.EventDetailFragment"

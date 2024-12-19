@@ -2,23 +2,29 @@ package com.example.eventflow.ui.event
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.eventflow.common.BaseViewModel
+import com.example.eventflow.database.repository.CustomerRepository
+import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.models.EventModel
-import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.Calendar
+import javax.inject.Inject
 
-class EventDetailViewModel : ViewModel() {
+@HiltViewModel
+class EventDetailViewModel @Inject constructor(
+    private val eventRepository: EventRepository,
+    private val customerRepository: CustomerRepository
+) : BaseViewModel() {
     // TODO: Müşteri listesi için, view model ayağa kalktığında istek atılacak ve müşteriler bir değişkene yazılacak.
 
-    private val db = FirebaseFirestore.getInstance()
     val calendar by lazy {
         Calendar.getInstance()
     }
 
-    private val _customers: MutableList<CustomerModel> = mutableListOf()
-    val customers: List<CustomerModel>
-        get() = _customers
+    val customerModel: MutableLiveData<List<CustomerModel>> = MutableLiveData()
 
     private val _eventDate = MutableLiveData<String>()
     val eventDate: LiveData<String> get() = _eventDate
@@ -46,8 +52,8 @@ class EventDetailViewModel : ViewModel() {
                 event.date.isNotEmpty() &&
                 event.startTime.isNotEmpty() &&
                 event.endTime.isNotEmpty() &&
-                event.location.isNotEmpty()&&
-                selectedCustomer.value != null&&
+                event.location.isNotEmpty() &&
+                selectedCustomer.value != null &&
                 event.serviceList?.isNotEmpty() == true
     }
 
@@ -57,15 +63,15 @@ class EventDetailViewModel : ViewModel() {
                 customer.phone.isNotEmpty()
     }
 
-    fun setCustomerName(name: String){
+    fun setCustomerName(name: String) {
         customer = customer.copy(name = name)
     }
 
-    fun setCustomerEmail(email: String){
+    fun setCustomerEmail(email: String) {
         customer = customer.copy(email = email)
     }
 
-    fun setCustomerPhone(phone: String){
+    fun setCustomerPhone(phone: String) {
         customer = customer.copy(phone = phone)
     }
 
@@ -102,61 +108,47 @@ class EventDetailViewModel : ViewModel() {
     }
 
     fun saveEvent(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        db.collection("events")
-            .add(event)
-            .addOnSuccessListener {
-
+        viewModelScope.launch {
+            setLoading(true)
+            val isEventSaved = eventRepository.addEvent(event)
+            if (isEventSaved) {
                 onSuccess()
+                setLoading(false)
+            } else {
+                onFailure(Exception("Event could not be saved"))
+                setLoading(false)
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+
+        }
     }
 
-    fun saveCustomers(
-        customer: CustomerModel,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        db.collection("customers")
-            .add(customer)
-            .addOnSuccessListener {
+    fun addCustomer(customer: CustomerModel) {
+        sendRequest(
+            call = {
+                customerRepository.addCustomer(customer)
+            },
+            result = { refId ->
                 _selectedCustomer.value = customer
-                _customers.add(customer) // TODO: Burada sadece listeye eklendiği için veri tabanında customerRef değerini almıyor.
-                selectCustomer(customer) // TODO: Event içindeki customerRef i bulup onun id si eklenecek.
-                event = event.copy(customerRef = it.id)
-                onSuccess()
+                selectCustomer(customer)
+                event = event.copy(customerRef = refId)
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        )
     }
 
-    fun getFirebaseCustomers(
-        onSuccess: (List<CustomerModel>) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        db.collection("customers")
-            .get()
-            .addOnSuccessListener { documents ->
-                val customers = documents.map {
-                    val customer = it.toObject(CustomerModel::class.java)
-                    customer.customerRef = it.id
-                    customer
-                }
-                _customers.clear()
-                _customers.addAll(customers)
-                onSuccess(customers)
+    fun getCustomers(){
+        sendRequest(
+            call = {
+                customerRepository.getCustomers()
+            }, result = {
+                customerModel.value = it
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        )
     }
 
     fun selectCustomer(customer: CustomerModel) {
         if (selectedCustomer.value == customer) return
         event = event.copy(customerRef = customer.customerRef)
-        _customers.forEach {
+        customerModel.value?.forEach {
             it.isSelected = it == customer
         }
         _selectedCustomer.value = customer

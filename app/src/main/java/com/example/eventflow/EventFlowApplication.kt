@@ -4,8 +4,5 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class EventFlowApplication : Application(){
-    override fun onCreate() {
-        super.onCreate()
-    }
+class EventFlowApplication : Application() {
 }

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.example.eventflow.BaseProgress
+import com.example.eventflow.common.BaseProgress
 import com.example.eventflow.R
 import com.example.eventflow.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint

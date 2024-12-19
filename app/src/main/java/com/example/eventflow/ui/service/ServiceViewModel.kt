@@ -1,24 +1,22 @@
 package com.example.eventflow.ui.service
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.eventflow.models.EventModel
+import com.example.eventflow.common.BaseViewModel
+import com.example.eventflow.database.repository.ServiceRepository
 import com.example.eventflow.models.ServiceModel
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ServiceViewModel: ViewModel() {
+@HiltViewModel
+class ServiceViewModel @Inject constructor(
+    private val serviceRepository: ServiceRepository
+) : BaseViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
-    var event: EventModel = EventModel()
 
-    private val _services: MutableList<ServiceModel> = mutableListOf()
-    val services: List<ServiceModel> get() = _services
-
-    private var _serviceId: String? = null
-    val serviceId: String?
-        get() = _serviceId
+    val serviceModel: MutableLiveData<List<ServiceModel>> = MutableLiveData()
 
     var service: ServiceModel = ServiceModel()
 
@@ -47,70 +45,41 @@ class ServiceViewModel: ViewModel() {
         service = service.copy(servicePrice = price)
     }
 
-    fun saveServices(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        db.collection("services")
-            .add(service)
-            .addOnSuccessListener {
-                service.serviceId = it.id
-                _services.add(service)
-                onSuccess()
+    fun saveServices() {
+        sendRequest(
+            call = {
+                serviceRepository.addService(service)
+            }, result = {
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        )
     }
 
-    fun getServices(onSuccess: (List<ServiceModel>) -> Unit,onFailure: (Exception) -> Unit) {
-        db.collection("services")
-            .get()
-            .addOnSuccessListener { documents ->
-                val services = documents.map {
-                    val service = it.toObject(ServiceModel::class.java)
-                    service.serviceId = it.id
-                    service
-                }
-                _services.clear()
-                _services.addAll(services)
-                onSuccess(services)
+    fun getServices() {
+        sendRequest(
+            call = {
+                serviceRepository.getServices()
+            }, result = {
+                serviceModel.value = it
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        )
     }
 
     fun deleteService(serviceId: String) {
-        db.collection("services").document(serviceId)
-            .delete()
-            .addOnSuccessListener {
-                // Listedeki ilgili servisi kaldır
-                val removedService = _services.find { it.serviceId == serviceId }
-                if (removedService != null) {
-                    _services.remove(removedService)
-                }
-                Log.d("Firestore", "Belge başarıyla silindi.")
+        sendRequest(
+            call = {
+                serviceRepository.deleteService(serviceId)
+            }, result = {
             }
-            .addOnFailureListener { exception ->
-                Log.w("Firestore", "Belge silinirken hata oluştu.", exception)
-            }
+        )
     }
 
-    fun updateService(updatedService: ServiceModel, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    fun updateService(updatedService: ServiceModel) {
         val serviceId = _selectedItem.value?.serviceId ?: ""
-        db.collection("services").document(serviceId)
-            .set(updatedService)
-            .addOnSuccessListener {
-                // Listedeki ilgili servisi güncelle
-                val index = _services.indexOfFirst { it.serviceId == serviceId }
-                if (index != -1) {
-                    _services[index] = updatedService
-                }
-                onSuccess()
-                Log.d("Firestore", "Belge başarıyla güncellendi.")
+        sendRequest(
+            call = {
+                serviceRepository.updateService(serviceId,updatedService)
+            }, result = {
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-                Log.w("Firestore", "Belge güncellenirken hata oluştu.", exception)
-            }
+        )
     }
-
 }

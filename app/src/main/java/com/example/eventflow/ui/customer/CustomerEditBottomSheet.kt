@@ -11,8 +11,10 @@ import com.example.eventflow.databinding.BottomSheetCustomerEditBinding
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.ui.event.EventDetailViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
+@AndroidEntryPoint
 class CustomerEditBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetCustomerEditBinding? = null

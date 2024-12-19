@@ -3,7 +3,6 @@ package com.example.eventflow.ui.event
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.eventflow.R
+import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentEventDetailBinding
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.ui.SharedViewModel
@@ -25,15 +24,17 @@ import com.example.eventflow.ui.customer.CustomerListBottomSheet
 import com.example.eventflow.ui.service.ServiceViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import kotlin.getValue
 
-class EventDetailFragment : Fragment() {
+@AndroidEntryPoint
+class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
+    override val viewModel: EventDetailViewModel by viewModels()
 
     private var _binding: FragmentEventDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<EventDetailViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
     private val serviceViewModel by viewModels<ServiceViewModel>()
 
@@ -48,8 +49,29 @@ class EventDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getFirebaseCustomers(onSuccess = {
-            if (it.isEmpty()) {
+        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { event ->
+            event ?: return@observe
+            binding.eventTitleEditText.setText(event.title)
+            binding.eventDescriptionEditText.setText(event.description)
+            binding.eventDateEditText.setText(event.date)
+            binding.eventStartTimeEditText.setText(event.startTime)
+            binding.eventEndTimeEditText.setText(event.endTime)
+            binding.eventLocationEditText.setText(event.location)
+
+            when (event.category) {
+                "Kutlama" -> binding.radioCelebration.isChecked = true
+                "Atölye" -> binding.radioWorkshop.isChecked = true
+            }
+
+            val selectedServices = event.serviceList ?: emptyList()
+            binding.chipGroup?.let {
+                markSelectedChips(it, selectedServices)
+            }
+
+        }
+
+        viewModel.customerModel.observe(viewLifecycleOwner) { customer ->
+            if (customer.isEmpty()) {
                 binding.infoCardView.isVisible = true
                 binding.customerProfileCardView.isVisible = false
                 binding.emptyCustomerCardView.isVisible = false
@@ -58,16 +80,17 @@ class EventDetailFragment : Fragment() {
                 binding.infoCardView.isVisible = false
                 binding.customerProfileCardView.isVisible = false
             }
-        }, onFailure = {
-            Toast.makeText(requireContext(), "Hata: ${it.message}", Toast.LENGTH_SHORT).show()
-        })
+        }
+        viewModel.getCustomers()
+
+        addChips()
 
         binding.eventTitleEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setTitle(text.toString())
         }
 
-        addChips()
-        binding.serviceAddTextView.setOnClickListener{
+
+        binding.serviceAddTextView.setOnClickListener {
             findNavController().navigate(R.id.serviceDetailFragment)
         }
 
@@ -204,52 +227,61 @@ class EventDetailFragment : Fragment() {
 
     }
 
-    fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
-        serviceViewModel.getServices(
-            onSuccess = {
-                if (it.isEmpty()) {
-                    binding.chipGroupScrollView.isVisible = false
-                    binding.serviceTitle.isVisible = false
-                    binding.serviceAddTextView.isVisible = true
-                }
-                it.forEach { service ->
-                    val chip = Chip(requireContext()).apply {
-                        text = service.serviceName
-                        chipBackgroundColor = ContextCompat.getColorStateList(
+    private fun markSelectedChips(chipGroup: ChipGroup, selectedServices: List<String>) {
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as? Chip
+            chip?.isChecked = selectedServices.contains(chip?.text.toString()) // Eğer seçili listede varsa işaretle
+        }
+    }
+
+    private fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
+        serviceViewModel.getServices()
+        serviceViewModel.serviceModel.observe(viewLifecycleOwner) {
+            isVisibleChip(it.isEmpty())
+            it.forEach { service ->
+                val chip = Chip(requireContext()).apply {
+                    text = service.serviceName
+                    chipBackgroundColor = ContextCompat.getColorStateList(
+                        requireContext(),
+                        R.color.chip_background
+                    )
+                    setTextColor(
+                        ContextCompat.getColorStateList(
                             requireContext(),
-                            R.color.chip_background
+                            R.color.chip_text_color
                         )
-                        setTextColor(
-                            ContextCompat.getColorStateList(
-                                requireContext(),
-                                R.color.chip_text_color
-                            )
-                        )
-                        isCheckable = true
-                    }
-
-                    chip.setOnCheckedChangeListener { buttonView, isChecked ->
-                        if (isChecked) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Seçildi: ${service.serviceName}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "Kaldırıldı: ${service.serviceName}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        viewModel.setServices(getSelectedChips())
-                    }
-
-                    chipGroup.addView(chip)
+                    )
+                    isCheckable = true
                 }
-            }, onFailure = { exception ->
-                Log.e("SERVICE CHIP HATA", "servisler çekilirken hata oluştu: ${exception.message}")
-            })
+
+                chip.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Seçildi: ${service.serviceName}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Kaldırıldı: ${service.serviceName}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    viewModel.setServices(getSelectedChips())
+                }
+
+                chipGroup.addView(chip)
+            }
+        }
+    }
+
+    private fun isVisibleChip(isEmpty: Boolean){
+        if(isEmpty){
+            binding.chipGroupScrollView.isVisible = false
+            binding.serviceTitle.isVisible = false
+            binding.serviceAddTextView.isVisible = true
+        }
     }
 
     private fun getSelectedChips(chipGroup: ChipGroup = binding.chipGroup): List<String> {
@@ -266,14 +298,7 @@ class EventDetailFragment : Fragment() {
     private fun customerEditBottomSheet() {
         val bottomSheet = CustomerEditBottomSheet.Companion.newInstance()
         bottomSheet.onSaveClicked = { customer ->
-            viewModel.saveCustomers(customer, onSuccess = {
-
-            }, onFailure = { exception ->
-                Toast.makeText(
-                    requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT
-                ).show()
-            })
-
+            viewModel.addCustomer(customer)
         }
 
         bottomSheet.show(parentFragmentManager, "CustomerEditBottomSheet")
@@ -281,7 +306,7 @@ class EventDetailFragment : Fragment() {
 
     private fun customerListBottomSheet() {
         CustomerListBottomSheet(
-            customerList = viewModel.customers,
+            customerList = viewModel.customerModel.value!!,
             onItemClick = { selectedCustomer ->
                 viewModel.selectCustomer(selectedCustomer)
             }

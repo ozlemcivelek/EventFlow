@@ -10,15 +10,18 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentServiceDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
-class ServiceDetailFragment : Fragment() {
+@AndroidEntryPoint
+class ServiceDetailFragment : BaseFragment<ServiceViewModel>() {
 
     private var _binding: FragmentServiceDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by activityViewModels<ServiceViewModel>()
+    override val viewModel: ServiceViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +66,6 @@ class ServiceDetailFragment : Fragment() {
             viewModel.setPrice(text.toString())
         }
 
-        //TODO: Fotoğraf ekleme için, bottom sheet -> galeriden seçme veya kamera açma kısmı eklenecek.
-
         binding.serviceSaveButton.setOnClickListener {
             //TODO: Null ve empty kontrollerini yap
             if (!viewModel.isDataValid()) {
@@ -73,26 +74,13 @@ class ServiceDetailFragment : Fragment() {
                 ).show()
                 return@setOnClickListener
             }
-
-            viewModel.saveServices(onSuccess = {
-                //actionServiceDetailFragmentToServiceFragment()
-                findNavController().popBackStack()
-                Toast.makeText(requireContext(), "Hizmet kaydedildi", Toast.LENGTH_SHORT).show()
-            }, onFailure = { exception ->
-                Toast.makeText(requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT)
-                    .show()
-            })
+            viewModel.saveServices()
+            findNavController().popBackStack()
         }
 
         binding.serviceUpdateButton.setOnClickListener {
-            viewModel.updateService(
-                viewModel.service,
-                onSuccess = {
-                actionServiceDetailFragmentToServiceFragment()
-                Toast.makeText(requireContext(), "Hizmet güncellendi", Toast.LENGTH_SHORT).show()
-                }, onFailure = { exception ->
-                    Toast.makeText(requireContext(), "Hizmet güncellemede hata oluştu: ${exception.message}", Toast.LENGTH_SHORT).show()
-                })
+            viewModel.updateService(viewModel.service)
+            actionServiceDetailFragmentToServiceFragment()
         }
     }
 
