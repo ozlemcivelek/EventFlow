@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="customer"
+            type="com.example.eventflow.models.CustomerModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/customerProfileCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:cardBackgroundColor="@{customer.selected ? @color/white : @color/dusty_white}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <!-- Profil İkonu -->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_cardview_profile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/icon_color" />
+
+                <!-- Müşteri Adı ve Soyadı -->
+                <TextView
+                    android:id="@+id/customerNameTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{customer.name}"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/profileImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Customer Name" />
+
+                <!-- E-posta Bilgisi -->
+                <TextView
+                    android:id="@+id/customerEmailTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@{customer.email}"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/customerNameTextView"
+                    app:layout_constraintStart_toStartOf="@id/customerNameTextView"
+                    app:layout_constraintTop_toBottomOf="@id/customerNameTextView"
+                    tools:text="Customer Email" />
+
+                <!-- Telefon Bilgisi -->
+                <TextView
+                    android:id="@+id/customerPhoneTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@{customer.phone}"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/customerNameTextView"
+                    app:layout_constraintStart_toStartOf="@id/customerNameTextView"
+                    app:layout_constraintTop_toBottomOf="@id/customerEmailTextView"
+                    tools:text="Customer Phone" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="reservation"
+            type="com.example.eventflow.models.ReservationModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="8dp"
+        android:background="@drawable/edit_text_background"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/reservationNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{"Rezervasyon Adı: " + reservation.name}'
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rezervasyon Name" />
+
+        <TextView
+            android:id="@+id/reservationDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{"Rezervasyon Tarihi: " + reservation.date}'
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reservationNameTextView"
+            tools:text="Rezervasyon Tarihi" />
+
+        <TextView
+            android:id="@+id/reservationTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{"Saati: " + reservation.time}'
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reservationDateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/reservationNameTextView"
+            tools:text="Rezervasyon saati" />
+
+        <TextView
+            android:id="@+id/reservationCustomerNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text='@{"Müşteri Adı: " + reservation.customerName}'
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reservationDateTextView"
+            tools:text="Müşteri Adı" />
+
+        <TextView
+            android:id="@+id/customerPhoneNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{reservation.customerPhone}'
+            android:drawableStart="@drawable/ic_call"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/black"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reservationCustomerNameTextView"/>
+
+        <TextView
+            android:id="@+id/reservationRemainingTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{"Kalan süre: " + reservation.remainingTime}'
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reservationCustomerNameTextView"
+            tools:text="Kalan süre" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

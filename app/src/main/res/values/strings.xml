@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">EventFlow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_up">Kayıt Ol</string>
+    <string name="login">GİRİŞ</string>
+    <string name="enter_password">Şifrenizi giriniz!</string>
+    <string name="enter_email">E-postanızı giriniz!</string>
+    <string name="name_enter">Adınızı giriniz</string>
+    <string name="now_sign_up">Şimdi üye ol</string>
+    <string name="are_you_not_sign_up">Üye değil misin?</string>
+    <string name="sign_up_upper">KAYIT OL</string>
+    <string name="already_signup">Zaten üye misin?</string>
+    <string name="login_lower">Giriş Yap</string>
 </resources>
