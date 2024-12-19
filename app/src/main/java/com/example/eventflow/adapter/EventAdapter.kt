@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eventflow.models.EventModel
-import com.example.eventflow.databinding.RecyclerRowBinding
+import com.example.eventflow.databinding.EventItemBinding
 
 class EventAdapter :
     RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
@@ -18,14 +18,14 @@ class EventAdapter :
         notifyDataSetChanged()
     }
 
-    class EventViewHolder(val binding: RecyclerRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    class EventViewHolder(val binding: EventItemBinding) : RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): EventAdapter.EventViewHolder {
-        val binding = RecyclerRowBinding.inflate(
+        val binding = EventItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

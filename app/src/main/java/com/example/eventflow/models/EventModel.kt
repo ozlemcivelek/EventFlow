@@ -1,6 +1,7 @@
 package com.example.eventflow.models
 
 data class EventModel(
+    var eventId: String? = null,
     val title: String,
     val description: String,
     val category: String,
@@ -11,7 +12,7 @@ data class EventModel(
     var customerRef: String? = null,
     var serviceList: List<String>? = null,
 ) {
-    constructor() : this("", "", "", "", "", "", "")
+    constructor() : this("","", "", "", "", "", "", "")
 
     val prettyDate: String
         get() = date.toString() // Format this date for the UI

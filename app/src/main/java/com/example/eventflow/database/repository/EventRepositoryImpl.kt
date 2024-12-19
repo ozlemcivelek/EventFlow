@@ -27,7 +27,8 @@ class EventRepositoryImpl : EventRepository {
         eventId: String,
         event: EventModel
     ): Boolean {
-        TODO("Not yet implemented")
+        db.collection("events").document(eventId).set(event).await()
+        return true
     }
 
     override suspend fun deleteEvent(eventId: String): Boolean {

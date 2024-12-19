@@ -29,6 +29,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView"
         tools:itemCount="5"
-        tools:listitem="@layout/recycler_row" />
+        tools:listitem="@layout/event_item" />
 
 </LinearLayout>

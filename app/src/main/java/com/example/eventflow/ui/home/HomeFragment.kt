@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.eventflow.adapter.EventAdapter
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentHomeBinding
@@ -39,12 +40,18 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         binding.recyclerView.adapter = eventAdapter
         binding.calendarView.date = sharedViewModel.calendarTime
 
+        sharedViewModel.selectedItem(null)
         // Observe filtered Events in viewModel
         viewModel.filteredEvents.observe(viewLifecycleOwner) { filteredEvents ->
             eventAdapter.setItems(filteredEvents)
         }
         viewModel.eventsModel.observe(viewLifecycleOwner) { events ->
             setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
+        }
+        eventAdapter.onItemClicked = { event ->
+            sharedViewModel.selectedItem(event)
+            val action = HomeFragmentDirections.actionHomeFragmentToEventDetailFragment()
+            findNavController().navigate(action)
         }
 
         viewModel.getEvents()

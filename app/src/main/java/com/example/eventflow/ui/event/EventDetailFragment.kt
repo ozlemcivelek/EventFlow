@@ -49,6 +49,27 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { event ->
+            event ?: return@observe
+            binding.eventTitleEditText.setText(event.title)
+            binding.eventDescriptionEditText.setText(event.description)
+            binding.eventDateEditText.setText(event.date)
+            binding.eventStartTimeEditText.setText(event.startTime)
+            binding.eventEndTimeEditText.setText(event.endTime)
+            binding.eventLocationEditText.setText(event.location)
+
+            when (event.category) {
+                "Kutlama" -> binding.radioCelebration.isChecked = true
+                "Atölye" -> binding.radioWorkshop.isChecked = true
+            }
+
+            val selectedServices = event.serviceList ?: emptyList()
+            binding.chipGroup?.let {
+                markSelectedChips(it, selectedServices)
+            }
+
+        }
+
         viewModel.customerModel.observe(viewLifecycleOwner) { customer ->
             if (customer.isEmpty()) {
                 binding.infoCardView.isVisible = true
@@ -62,11 +83,13 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
         }
         viewModel.getCustomers()
 
+        addChips()
+
         binding.eventTitleEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setTitle(text.toString())
         }
 
-        addChips()
+
         binding.serviceAddTextView.setOnClickListener {
             findNavController().navigate(R.id.serviceDetailFragment)
         }
@@ -204,7 +227,14 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
 
     }
 
-    fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
+    private fun markSelectedChips(chipGroup: ChipGroup, selectedServices: List<String>) {
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as? Chip
+            chip?.isChecked = selectedServices.contains(chip?.text.toString()) // Eğer seçili listede varsa işaretle
+        }
+    }
+
+    private fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
         serviceViewModel.getServices()
         serviceViewModel.serviceModel.observe(viewLifecycleOwner) {
             isVisibleChip(it.isEmpty())
