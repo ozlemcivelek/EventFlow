@@ -40,6 +40,7 @@ MVVM, kodu modüler bir şekilde düzenlemeye olanak tanır. Model, View ve View
 - LiveData
 - UseCase
 - Navigation Components
+- Data Binding
 - Repository
 - Fragment
 
