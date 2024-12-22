@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dusty_white"
     tools:context=".ui.event.EventDetailFragment">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dusty_white"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp">
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="48dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_back"
@@ -30,6 +29,7 @@
             android:id="@+id/eventCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="24dp"
             app:cardBackgroundColor="#FEFEFE"
             app:cardCornerRadius="12dp"
@@ -75,8 +75,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Etkinlik Tarihi: "
-                    android:textStyle="bold"
                     android:textSize="12sp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/eventDescription" />
 
@@ -167,6 +167,7 @@
             android:id="@+id/serviceCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="24dp"
             app:cardBackgroundColor="#FEFEFE"
             app:cardCornerRadius="12dp"
@@ -207,18 +208,13 @@
 
         </androidx.cardview.widget.CardView>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/locationInfoConstraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"/>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/customerProfileCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
             app:cardBackgroundColor="#FEFEFE"
             app:cardCornerRadius="12dp"
             app:cardElevation="12dp"
@@ -249,8 +245,8 @@
                     android:id="@+id/customerName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="özlem bayraktar"
                     android:paddingStart="4dp"
+                    android:text="özlem bayraktar"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -265,8 +261,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="E posta: "
-                    android:textStyle="bold"
                     android:textSize="12sp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/customerName" />
 
@@ -275,9 +271,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingStart="4dp"
                     android:text="example@email.com"
                     android:textSize="12sp"
-                    android:paddingStart="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/customerEmailTitle"
                     app:layout_constraintTop_toBottomOf="@id/customerName" />
@@ -299,9 +295,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingStart="4dp"
                     android:text="+90 111 111 11 11"
                     android:textSize="12sp"
-                    android:paddingStart="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/customerPhoneTitle"
                     app:layout_constraintTop_toBottomOf="@id/customerEmail" />
