@@ -1,221 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dusty_white"
-    android:orientation="vertical"
-    android:paddingHorizontal="24dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.event.EventDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/eventInfoConstraintLayout"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/dusty_white"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp">
 
-        <TextView
-            android:id="@+id/eventSubTitle1"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Etkinlik Bilgileri"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/eventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Event Title"
-            android:textAlignment="textStart"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eventSubTitle1" />
-
-        <TextView
-            android:id="@+id/eventDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="start"
-            android:justificationMode="inter_word"
-            android:text="A product description is copy that informs potential customers about the product’s benefits to convince them to buy. Great product descriptions give compelling reasons to consider making a purchase based on the needs of target customers."
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eventTitle" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/serviceInfoConstraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
-
-        <TextView
-            android:id="@+id/serviceTitle"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hizmet Bilgisi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/service"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Seçilen hizmetler"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/serviceTitle" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dateTimeInfoConstraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
-
-        <TextView
-            android:id="@+id/timeTitle"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tarih ve Saat Bilgisi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Date"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeTitle" />
-
-        <TextView
-            android:id="@+id/startHour"
+        <ImageButton
+            android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="start hour"
-            android:textSize="12sp"
+            android:layout_marginTop="48dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/primary" />
 
-        <TextView
-            android:id="@+id/endHour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="end hour"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/startHour"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/locationInfoConstraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
-
-        <TextView
-            android:id="@+id/locationTitle"
-            style="@style/TextAppearance.AppCompat.Small"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/eventCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Konum Bilgisi"
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#FEFEFE"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/location"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/eventInfoConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/eventTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event Title"
+                    android:textAlignment="textStart"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/eventDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="start"
+                    android:justificationMode="inter_word"
+                    android:text="A product description is copy that informs potential customers about the product’s benefits to convince them to buy. Great product descriptions give compelling reasons to consider making a purchase based on the needs of target customers."
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/eventTitle" />
+
+                <TextView
+                    android:id="@+id/dateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Etkinlik Tarihi: "
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/eventDescription" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="4dp"
+                    android:text="22/12/2024"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/dateTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/eventDescription" />
+
+                <TextView
+                    android:id="@+id/startHourTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Başlangıç Saati: "
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                <TextView
+                    android:id="@+id/startHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="4dp"
+                    android:text="12:00"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/startHourTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+
+                <TextView
+                    android:id="@+id/endHourTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Bitiş Saati: "
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/startHour"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                <TextView
+                    android:id="@+id/endHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="4dp"
+                    android:text="16:00"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/endHourTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                <TextView
+                    android:id="@+id/locationTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Etkinlik Konumu: "
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/startHour" />
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="4dp"
+                    android:text="Kocaeli"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/locationTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/startHour" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/serviceCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Kocaeli"
-            android:textSize="12sp"
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#FEFEFE"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationTitle" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/serviceInfoConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/serviceTitle"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hizmet Bilgisi"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/service"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Seçilen hizmetler"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/serviceTitle" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/customerInfoConstraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp">
 
-        <TextView
-            android:id="@+id/customerSectionTitle"
-            style="@style/TextAppearance.AppCompat.Subhead"
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/locationInfoConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Müşteri Bilgileri"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="24dp"/>
 
-        <!-- Müşteri Adı ve Soyadı -->
-        <TextView
-            android:id="@+id/customerName"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/customerProfileCardView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Müşteri Adı Soyadı"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#FEFEFE"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customerSectionTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/locationInfoConstraintLayout">
 
-        <!-- E-posta Bilgisi -->
-        <TextView
-            android:id="@+id/customerEmail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="E posta: example@email.com"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/customerName" />
 
-        <!-- Telefon Bilgisi -->
-        <TextView
-            android:id="@+id/customerPhone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Telefon: +90 111 111 11 11"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/customerEmail" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/customerInfoConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
-</LinearLayout>
+                <!-- Müşteri Adı ve Soyadı -->
+                <TextView
+                    android:id="@+id/customerNameTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Müşteri Adı Soyadı: "
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/customerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="özlem bayraktar"
+                    android:paddingStart="4dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/customerNameTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- E-posta Bilgisi -->
+
+                <TextView
+                    android:id="@+id/customerEmailTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="E posta: "
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/customerName" />
+
+                <TextView
+                    android:id="@+id/customerEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="example@email.com"
+                    android:textSize="12sp"
+                    android:paddingStart="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/customerEmailTitle"
+                    app:layout_constraintTop_toBottomOf="@id/customerName" />
+
+                <!-- Telefon Bilgisi -->
+                <TextView
+                    android:id="@+id/customerPhoneTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Telefon: "
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/customerEmail" />
+
+                <TextView
+                    android:id="@+id/customerPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="+90 111 111 11 11"
+                    android:textSize="12sp"
+                    android:paddingStart="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/customerPhoneTitle"
+                    app:layout_constraintTop_toBottomOf="@id/customerEmail" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
