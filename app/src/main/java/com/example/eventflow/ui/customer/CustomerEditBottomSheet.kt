@@ -9,7 +9,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import com.example.eventflow.databinding.BottomSheetCustomerEditBinding
 import com.example.eventflow.models.CustomerModel
-import com.example.eventflow.ui.event.EventDetailViewModel
+import com.example.eventflow.ui.event.AddEventViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -22,7 +22,7 @@ class CustomerEditBottomSheet : BottomSheetDialogFragment() {
 
     var onSaveClicked: ((CustomerModel) -> Unit)? = null // Save callback
 
-    private val viewModel by viewModels<EventDetailViewModel>()
+    private val viewModel by viewModels<AddEventViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

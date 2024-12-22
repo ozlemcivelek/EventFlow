@@ -49,9 +49,14 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
         }
         eventAdapter.onItemClicked = { event ->
-            sharedViewModel.selectedItem(event)
-            val action = HomeFragmentDirections.actionHomeFragmentToEventDetailFragment()
-            findNavController().navigate(action)
+            //TODO: burada yeni bir sayfada verileri gösterip düzenleme ve silme yapılabilir.
+            //sharedViewModel.selectedItem(event)
+            event.eventId?.let {
+                val action = HomeFragmentDirections.actionHomeFragmentToEventEditFragment(it)
+                findNavController().navigate(action)
+            }
+            //val action = HomeFragmentDirections.actionHomeFragmentToEventDetailFragment()
+            //findNavController().navigate(action)
         }
 
         viewModel.getEvents()
