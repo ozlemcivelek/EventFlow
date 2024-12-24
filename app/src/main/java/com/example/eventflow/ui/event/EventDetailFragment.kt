@@ -1,7 +1,6 @@
 package com.example.eventflow.ui.event
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentEventDetailBinding
 import com.example.eventflow.ui.SharedViewModel
-import com.example.eventflow.ui.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -25,6 +23,7 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
     private val args by navArgs<EventDetailFragmentArgs>()
 
     private val sharedViewModel by activityViewModels<SharedViewModel>()
+    private val addEventViewModel by activityViewModels<AddEventViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +49,7 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
             binding.startHour.text = it.startTime
             binding.endHour.text = it.endTime
             binding.location.text = it.location
-            //binding.category.text = event.category
+            //binding.category.text = it.category
             binding.service.text = ""
             it.serviceList?.forEach {
                 binding.service.append(it + "\n")
@@ -61,20 +60,29 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
 
         }
 
+        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { event ->
+            event?.let {
+                addEventViewModel.setEventFromEventDetail(event)
+            }
+        }
+
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
         }
         binding.deleteButton.setOnClickListener{
-            //viewModel.deleteEvent(args.eventId)
-            //findNavController().popBackStack()
+            selectedItemEvent()
+            addEventViewModel.deleteEvent()
+            findNavController().popBackStack()
         }
         binding.editButton.setOnClickListener{
-            val event = viewModel.eventDetail.value!!
-            sharedViewModel.selectedItem(event)
-            //event update
+            selectedItemEvent()
             val action = EventDetailFragmentDirections.actionEventDetailFragmentToAddEventFragment()
             findNavController().navigate(action)
         }
+    }
 
+    private fun selectedItemEvent(){
+        val event = viewModel.eventDetail.value!!
+        sharedViewModel.selectedItem(event)
     }
 }

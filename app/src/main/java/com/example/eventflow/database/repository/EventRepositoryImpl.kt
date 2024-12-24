@@ -36,7 +36,10 @@ class EventRepositoryImpl : EventRepository {
         return true
     }
 
-    override suspend fun deleteEvent(eventId: String): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun deleteEvent(event: EventModel): Boolean {
+        val id = event.eventId ?: return false
+        db.collection("events").document(id).delete().await()
+        return true
+
     }
 }

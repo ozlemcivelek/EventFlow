@@ -135,6 +135,16 @@ class AddEventViewModel @Inject constructor(
         )
     }
 
+    fun deleteEvent() {
+        sendRequest(
+            call = {
+                eventRepository.deleteEvent(event)
+            }, result = {
+
+            }
+        )
+    }
+
     fun addCustomer(customer: CustomerModel) {
         sendRequest(
             call = {

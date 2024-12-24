@@ -15,26 +15,3 @@ fun EventDetailModel.toEvent() = EventModel(
     customerRef = customerRef,
     serviceList = serviceList,
 )
-
-fun asd() {
-
-}
-
-fun String.extensionTest() {
-    println(this)
-}
-
-fun Int.test() {
-
-}
-
-
-fun main() {
-    asd()
-
-    "asd".extensionTest()
-
-
-    112.test()
-
-}
