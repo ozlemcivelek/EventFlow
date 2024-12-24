@@ -8,6 +8,7 @@ import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.database.repository.EventRepositoryImpl
 import com.example.eventflow.database.repository.ServiceRepository
 import com.example.eventflow.database.repository.ServiceRepositoryImpl
+import com.example.eventflow.database.usecase.GetEventUseCase
 import com.example.eventflow.database.usecase.GetReservationsUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
@@ -36,6 +37,16 @@ class AppModule {
     fun provideCustomerRepository(): CustomerRepository = CustomerRepositoryImpl()
 
     @Provides
-    fun provideReservationUseCase(eventRepository: EventRepository, customerRepository: CustomerRepository ): GetReservationsUseCase =
+    fun provideReservationUseCase(
+        eventRepository: EventRepository,
+        customerRepository: CustomerRepository
+    ): GetReservationsUseCase =
         GetReservationsUseCase(eventRepository, customerRepository)
+
+    @Provides
+    fun provideEventUseCase(
+        eventRepository: EventRepository,
+        customerRepository: CustomerRepository
+    ): GetEventUseCase =
+        GetEventUseCase(eventRepository, customerRepository)
 }

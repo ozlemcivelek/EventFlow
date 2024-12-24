@@ -3,7 +3,7 @@ package com.example.eventflow.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.eventflow.models.EventModel
+import com.example.eventflow.models.EventDetailModel
 import java.util.Calendar
 
 class SharedViewModel : ViewModel() {
@@ -16,10 +16,10 @@ class SharedViewModel : ViewModel() {
     }
 
 
-    private val _selectedItem = MutableLiveData<EventModel?>(null)
-    val selectedItem: LiveData<EventModel?> get() = _selectedItem
+    private val _selectedItem = MutableLiveData<EventDetailModel?>(null)
+    val selectedItem: LiveData<EventDetailModel?> get() = _selectedItem
 
-    fun selectedItem(event: EventModel?) {
+    fun selectedItem(event: EventDetailModel?) {
         _selectedItem.value = event
     }
 }

@@ -1,5 +1,7 @@
 package com.example.eventflow.models
 
+import com.google.firebase.firestore.Exclude
+
 data class EventModel(
     var eventId: String? = null,
     val title: String,
@@ -12,8 +14,9 @@ data class EventModel(
     var customerRef: String? = null,
     var serviceList: List<String>? = null,
 ) {
-    constructor() : this("","", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", "")
 
     val prettyDate: String
+        @Exclude
         get() = date.toString() // Format this date for the UI
 }
