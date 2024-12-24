@@ -162,7 +162,6 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         }
 
         binding.eventSaveButton.setOnClickListener {
-            // TODO: Null ve empty kontrollerini yap
             if (!viewModel.isDataEventValid()) {
                 Toast.makeText(
                     requireContext(), "Eksik alanlar var, kontrol et", Toast.LENGTH_SHORT
@@ -170,15 +169,7 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
                 return@setOnClickListener
             }
 
-
-            viewModel.saveEvent(onSuccess = {
-                val action = AddEventFragmentDirections.actionEventDetailFragmentToHomeFragment()
-                findNavController().navigate(action)
-                Toast.makeText(requireContext(), "Etkinlik kaydedildi", Toast.LENGTH_SHORT).show()
-            }, onFailure = { exception ->
-                Toast.makeText(requireContext(), "Hata: ${exception.message}", Toast.LENGTH_SHORT)
-                    .show()
-            })
+            viewModel.addEvent()
 
         }
 
@@ -209,7 +200,7 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
 
         viewModel.updateOrSaveSuccess.observe(viewLifecycleOwner) {
             if (it) {
-                findNavController().popBackStack() //anasayfaya mı gitmeli
+                findNavController().navigate(R.id.homeFragment)
             }
         }
 
