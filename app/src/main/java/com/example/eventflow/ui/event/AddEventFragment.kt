@@ -18,6 +18,8 @@ import com.example.eventflow.R
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentAddEventBinding
 import com.example.eventflow.models.CustomerModel
+import com.example.eventflow.models.EventDetailModel
+import com.example.eventflow.models.ServiceModel
 import com.example.eventflow.ui.SharedViewModel
 import com.example.eventflow.ui.customer.CustomerEditBottomSheet
 import com.example.eventflow.ui.customer.CustomerListBottomSheet
@@ -38,6 +40,8 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
     private val sharedViewModel by activityViewModels<SharedViewModel>()
     private val serviceViewModel by viewModels<ServiceViewModel>()
 
+    private var isCustomer: Boolean? = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -49,29 +53,12 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { event ->
-            event ?: return@observe
-            binding.eventTitleEditText.setText(event.title)
-            binding.eventDescriptionEditText.setText(event.description)
-            binding.eventDateEditText.setText(event.date)
-            binding.eventStartTimeEditText.setText(event.startTime)
-            binding.eventEndTimeEditText.setText(event.endTime)
-            binding.eventLocationEditText.setText(event.location)
-
-            when (event.category) {
-                "Kutlama" -> binding.radioCelebration.isChecked = true
-                "Atölye" -> binding.radioWorkshop.isChecked = true
-            }
-
-            val selectedServices = event.serviceList ?: emptyList()
-            binding.chipGroup?.let {
-                markSelectedChips(it, selectedServices)
-            }
-
-        }
-
         viewModel.customerModel.observe(viewLifecycleOwner) { customer ->
-            if (customer.isEmpty()) {
+            if (isCustomer == true) {
+                binding.infoCardView.isVisible = false
+                binding.customerProfileCardView.isVisible = true
+                binding.emptyCustomerCardView.isVisible = false
+            } else if (customer.isEmpty()) {
                 binding.infoCardView.isVisible = true
                 binding.customerProfileCardView.isVisible = false
                 binding.emptyCustomerCardView.isVisible = false
@@ -81,14 +68,10 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
                 binding.customerProfileCardView.isVisible = false
             }
         }
-        viewModel.getCustomers()
-
-        addChips()
 
         binding.eventTitleEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setTitle(text.toString())
         }
-
 
         binding.serviceAddTextView.setOnClickListener {
             findNavController().navigate(R.id.serviceDetailFragment)
@@ -98,8 +81,6 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
             viewModel.setDescription(text.toString())
         }
 
-        binding.radioCelebration.isChecked = true
-        viewModel.setCategory("Kutlama")
         binding.categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 binding.radioCelebration.id -> viewModel.setCategory("Kutlama")
@@ -168,7 +149,6 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
             findNavController().popBackStack()
         }
 
-
         binding.eventStartTime.setEndIconOnClickListener {
             showTimePicker { selectedTime ->
                 binding.eventStartTimeEditText.setText(selectedTime)
@@ -202,6 +182,10 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
 
         }
 
+        binding.eventUpdateButton.setOnClickListener {
+            viewModel.updateEvent()
+        }
+
         binding.customDescriptionButton.setOnClickListener {
             binding.eventDescription.visibility = View.VISIBLE
             binding.customDescriptionButton.visibility = View.GONE
@@ -223,57 +207,92 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
             customerCardView(it)
         }
 
-        viewModel.setCalendarTime(sharedViewModel.calendarTime)
+        viewModel.updateOrSaveSuccess.observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().popBackStack() //anasayfaya mı gitmeli
+            }
+        }
 
+        serviceViewModel.serviceModel.observe(viewLifecycleOwner) {
+            addChips(it)
+        }
+
+        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { event ->
+            event?.let {
+                prepareSelectedCustomerData(it)
+            }
+        }
+
+        viewModel.setCalendarTime(sharedViewModel.calendarTime)
+        serviceViewModel.getServices()
+        viewModel.getCustomers()
     }
 
-    private fun markSelectedChips(chipGroup: ChipGroup, selectedServices: List<String>) {
-        for (i in 0 until chipGroup.childCount) {
-            val chip = chipGroup.getChildAt(i) as? Chip
-            chip?.isChecked =
-                selectedServices.contains(chip?.text.toString()) // Eğer seçili listede varsa işaretle
+    private fun prepareSelectedCustomerData(eventDetail: EventDetailModel) {
+        viewModel.setEventFromEventDetail(eventDetail)
+        if (eventDetail.customerName != null)
+            isCustomer = true
+
+        binding.customerNameTextView.text = eventDetail.customerName
+        binding.emailTextView.text = eventDetail.customerEmail
+        binding.phoneTextView.text = eventDetail.customerPhone
+
+        binding.pageTitle.isVisible = false
+        binding.pageNewTitle.isVisible = true
+        binding.eventUpdateButton.isVisible = true
+        binding.eventSaveButton.isVisible = false
+
+        binding.eventTitleEditText.setText(eventDetail.title)
+        binding.eventDescriptionEditText.setText(eventDetail.description)
+        binding.eventDateEditText.setText(eventDetail.date)
+        binding.eventStartTimeEditText.setText(eventDetail.startTime)
+        binding.eventEndTimeEditText.setText(eventDetail.endTime)
+        binding.eventLocationEditText.setText(eventDetail.location)
+
+        when (eventDetail.category) {
+            "Kutlama" -> binding.radioCelebration.isChecked = true
+            "Atölye" -> binding.radioWorkshop.isChecked = true
         }
     }
 
-    private fun addChips(chipGroup: ChipGroup = binding.chipGroup) {
-        serviceViewModel.getServices()
-        serviceViewModel.serviceModel.observe(viewLifecycleOwner) {
-            isVisibleChip(it.isEmpty())
-            it.forEach { service ->
-                val chip = Chip(requireContext()).apply {
-                    text = service.serviceName
-                    chipBackgroundColor = ContextCompat.getColorStateList(
+    private fun addChips(serviceList: List<ServiceModel>) {
+        isVisibleChip(serviceList.isEmpty())
+        serviceList.forEach { service ->
+            val chip = Chip(requireContext()).apply {
+                text = service.serviceName
+                chipBackgroundColor = ContextCompat.getColorStateList(
+                    requireContext(),
+                    R.color.chip_background
+                )
+                setTextColor(
+                    ContextCompat.getColorStateList(
                         requireContext(),
-                        R.color.chip_background
+                        R.color.chip_text_color
                     )
-                    setTextColor(
-                        ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.chip_text_color
-                        )
-                    )
-                    isCheckable = true
-                }
-
-                chip.setOnCheckedChangeListener { buttonView, isChecked ->
-                    if (isChecked) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Seçildi: ${service.serviceName}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Kaldırıldı: ${service.serviceName}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    viewModel.setServices(getSelectedChips())
-                }
-
-                chipGroup.addView(chip)
+                )
+                isCheckable = true
             }
+            chip.isChecked =
+                sharedViewModel.selectedItem.value?.serviceList?.contains(service.serviceName) == true
+
+            chip.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Seçildi: ${service.serviceName}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Kaldırıldı: ${service.serviceName}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                viewModel.setServices(getSelectedChips())
+            }
+
+            binding.chipGroup.addView(chip)
         }
     }
 

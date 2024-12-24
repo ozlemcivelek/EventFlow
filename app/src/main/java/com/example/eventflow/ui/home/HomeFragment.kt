@@ -50,13 +50,11 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         }
         eventAdapter.onItemClicked = { event ->
             //TODO: burada yeni bir sayfada verileri gösterip düzenleme ve silme yapılabilir.
-            //sharedViewModel.selectedItem(event)
             event.eventId?.let {
                 val action = HomeFragmentDirections.actionHomeFragmentToEventEditFragment(it)
                 findNavController().navigate(action)
             }
-            //val action = HomeFragmentDirections.actionHomeFragmentToEventDetailFragment()
-            //findNavController().navigate(action)
+
         }
 
         viewModel.getEvents()

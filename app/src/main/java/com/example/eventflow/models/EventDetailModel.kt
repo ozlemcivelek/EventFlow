@@ -10,9 +10,10 @@ data class EventDetailModel(
     val location: String,
     val category: String,
     val serviceList: List<String>?,
+    val customerRef: String?,
     val customerName: String?,
     val customerPhone: String?,
     val customerEmail: String?,
 ) {
-    constructor() : this("", "", "", "", "", "", "", "", emptyList(), null, null, null)
+    constructor() : this("", "", "", "", "", "", "", "", emptyList(), null, null, null, null)
 }

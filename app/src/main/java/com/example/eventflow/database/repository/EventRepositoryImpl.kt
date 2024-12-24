@@ -19,7 +19,9 @@ class EventRepositoryImpl : EventRepository {
 
     override suspend fun getEventById(eventId: String): EventModel? {
         val doc = db.collection("events").document(eventId).get().await()
-        return doc.toObject(EventModel::class.java)
+        return doc.toObject(EventModel::class.java).apply {
+            this?.eventId = doc.id
+        }
     }
 
     override suspend fun addEvent(event: EventModel): Boolean {
@@ -28,11 +30,9 @@ class EventRepositoryImpl : EventRepository {
     }
 
 
-    override suspend fun updateEvent(
-        eventId: String,
-        event: EventModel
-    ): Boolean {
-        db.collection("events").document(eventId).set(event).await()
+    override suspend fun updateEvent(event: EventModel): Boolean {
+        val id = event.eventId ?: return false
+        db.collection("events").document(id).set(event).await()
         return true
     }
 

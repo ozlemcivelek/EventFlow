@@ -85,6 +85,9 @@
         <argument
             android:name="eventId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
 
     </fragment>
 </navigation>
