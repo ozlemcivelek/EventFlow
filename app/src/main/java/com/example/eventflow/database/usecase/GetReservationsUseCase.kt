@@ -38,6 +38,8 @@ class GetReservationsUseCase @Inject constructor(
 
             reservations.add(reservation)
         }
-        return reservations
+        return reservations.sortedBy { reservation ->
+            if (reservation.remainingTime == "Geçti") 1 else 0
+        }
     }
 }
