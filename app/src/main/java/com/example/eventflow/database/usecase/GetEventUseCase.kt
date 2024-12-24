@@ -23,6 +23,7 @@ class GetEventUseCase @Inject constructor(
                     location = event.location,
                     category = event.category,
                     serviceList = event.serviceList,
+                    customerRef = customerDoc?.customerRef,
                     customerName = customerDoc?.name,
                     customerPhone = customerDoc?.phone,
                     customerEmail = customerDoc?.email

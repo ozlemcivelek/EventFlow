@@ -7,7 +7,9 @@ import com.example.eventflow.common.BaseViewModel
 import com.example.eventflow.database.repository.CustomerRepository
 import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.database.usecase.GetEventUseCase
+import com.example.eventflow.mapper.toEvent
 import com.example.eventflow.models.CustomerModel
+import com.example.eventflow.models.EventDetailModel
 import com.example.eventflow.models.EventModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +21,7 @@ class AddEventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val customerRepository: CustomerRepository,
     private val eventUseCase: GetEventUseCase,
-    ) : BaseViewModel() {
+) : BaseViewModel() {
 
     val calendar by lazy {
         Calendar.getInstance()
@@ -33,8 +35,15 @@ class AddEventViewModel @Inject constructor(
     private val _selectedCustomer = MutableLiveData<CustomerModel>()
     val selectedCustomer: LiveData<CustomerModel> get() = _selectedCustomer
 
+    private val _updateOrSaveSuccess = MutableLiveData<Boolean>()
+    val updateOrSaveSuccess: LiveData<Boolean> get() = _updateOrSaveSuccess
+
     var event: EventModel = EventModel()
     var customer: CustomerModel = CustomerModel()
+
+    fun setEventFromEventDetail(eventDetailModel: EventDetailModel) {
+        event = eventDetailModel.toEvent()
+    }
 
     fun setCalendarTime(time: Long) {
         calendar.timeInMillis = time
@@ -119,8 +128,17 @@ class AddEventViewModel @Inject constructor(
                 onFailure(Exception("Event could not be saved"))
                 setLoading(false)
             }
-
         }
+    }
+
+    fun updateEvent() {
+        sendRequest(
+            call = {
+                eventRepository.updateEvent(event)
+            }, result = {
+                _updateOrSaveSuccess.value = it
+            }
+        )
     }
 
     fun addCustomer(customer: CustomerModel) {
@@ -136,7 +154,7 @@ class AddEventViewModel @Inject constructor(
         )
     }
 
-    fun getCustomers(){
+    fun getCustomers() {
         sendRequest(
             call = {
                 customerRepository.getCustomers()
