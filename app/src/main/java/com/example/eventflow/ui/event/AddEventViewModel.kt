@@ -2,7 +2,6 @@ package com.example.eventflow.ui.event
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.eventflow.common.BaseViewModel
 import com.example.eventflow.database.repository.CustomerRepository
 import com.example.eventflow.database.repository.EventRepository
@@ -12,7 +11,6 @@ import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.models.EventDetailModel
 import com.example.eventflow.models.EventModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -117,18 +115,14 @@ class AddEventViewModel @Inject constructor(
         event = event.copy(serviceList = services)
     }
 
-    fun saveEvent(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        viewModelScope.launch {
-            setLoading(true)
-            val isEventSaved = eventRepository.addEvent(event)
-            if (isEventSaved) {
-                onSuccess()
-                setLoading(false)
-            } else {
-                onFailure(Exception("Event could not be saved"))
-                setLoading(false)
+    fun addEvent() {
+        sendRequest(
+            call = {
+                eventRepository.addEvent(event)
+            }, result = {
+                _updateOrSaveSuccess.value = it
             }
-        }
+        )
     }
 
     fun updateEvent() {
