@@ -7,5 +7,5 @@ interface EventRepository {
     suspend fun getEventById(eventId: String): EventModel?
     suspend fun addEvent(event: EventModel): Boolean
     suspend fun updateEvent(event: EventModel): Boolean
-    suspend fun deleteEvent(eventId: String): Boolean
+    suspend fun deleteEvent(event: EventModel): Boolean
 }
