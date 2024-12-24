@@ -1,5 +1,7 @@
 package com.example.eventflow.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +55,16 @@ class ReservationAdapter: RecyclerView.Adapter<ReservationAdapter.ReservationVie
     ) {
         val reservation = filteredItems[position]
         holder.binding.reservation = reservation
+
+        holder.binding.customerPhoneNumberTextView.setOnClickListener {
+            val phoneNumber = reservation.customerPhone // Reservation modelindeki telefon numarası
+            if (!phoneNumber.isNullOrEmpty()) {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$phoneNumber")
+                }
+                it.context.startActivity(intent)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
