@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.eventflow.adapter.ReservationAdapter
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentReservationBinding
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -36,9 +37,14 @@ class ReservationFragment : BaseFragment<ReservationViewModel>() {
         binding.reservationListRecyclerView.adapter = reservationAdapter
 
         viewModel.getReservations()
-        viewModel.reservationModel.observe(viewLifecycleOwner) {
-            reservationAdapter.submitList(it)
-        }
+
+      viewModel.tabPosition.observe(viewLifecycleOwner){
+          if(it  == 0)
+              reservationAdapter.submitList(viewModel.upcomingReservations)
+          else
+              reservationAdapter.submitList(viewModel.pastReservations)
+      }
+        setupTabLayout()
 
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -49,6 +55,17 @@ class ReservationFragment : BaseFragment<ReservationViewModel>() {
                 reservationAdapter.filterList(newText ?: "")
                 return true
             }
+        })
+    }
+
+    private fun setupTabLayout() {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+               viewModel.tabPosition.value = tab?.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 

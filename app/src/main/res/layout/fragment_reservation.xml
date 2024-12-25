@@ -10,11 +10,31 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
+        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
-        android:layout_marginTop="32dp"
         android:queryHint="Rezervasyonlarda Ara"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/dusty_white">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Rezervasyonlar"/>
+
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Geçmiş Rezervasyonlar"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reservationListRecyclerView"
