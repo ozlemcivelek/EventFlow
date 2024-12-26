@@ -16,6 +16,7 @@ class ReservationViewModel @Inject constructor(
     var pastReservations = listOf<ReservationModel>()
 
     val tabPosition: MutableLiveData<Int> = MutableLiveData()
+    var emptyState: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun getReservations() {
         sendRequest(
@@ -23,6 +24,8 @@ class ReservationViewModel @Inject constructor(
                 reservationUseCase()
             },
             result = { allReservations ->
+                if(allReservations.isEmpty()) emptyState.value = true
+                else emptyState.value = false
                 val upcoming = allReservations.filter { it.remainingTime != "Geçti" }
                 val past = allReservations.filter { it.remainingTime == "Geçti" }
 

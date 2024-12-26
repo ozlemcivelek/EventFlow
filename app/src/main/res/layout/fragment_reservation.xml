@@ -10,28 +10,28 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
-        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Rezervasyonlarda Ara"/>
+        android:queryHint="Rezervasyonlarda Ara" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/dusty_white">
 
         <com.google.android.material.tabs.TabItem
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Rezervasyonlar"/>
+            android:layout_height="wrap_content"
+            android:text="Rezervasyonlar" />
 
 
         <com.google.android.material.tabs.TabItem
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Geçmiş Rezervasyonlar"/>
+            android:layout_height="wrap_content"
+            android:text="Geçmiş Rezervasyonlar" />
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -40,9 +40,36 @@
         android:id="@+id/reservationListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="124dp"
         android:clipToPadding="false"
+        android:paddingBottom="124dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/reservation_item" />
+        tools:listitem="@layout/reservation_item"
+        tools:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:visibility="gone">
+
+
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/empty_reservation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="Henüz rezervasyon bulunmamaktadır."
+            android:textColor="@color/black"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
