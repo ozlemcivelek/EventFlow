@@ -35,7 +35,6 @@ class GetReservationsUseCase @Inject constructor(
                 customerPhone = customerPhone,
                 remainingTime = remainingTime
             )
-
             reservations.add(reservation)
         }
         return reservations
