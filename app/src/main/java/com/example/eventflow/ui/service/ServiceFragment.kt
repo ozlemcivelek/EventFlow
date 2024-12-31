@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.eventflow.adapter.ServiceAdapter
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentServiceBinding
+import com.example.eventflow.ui.DeleteBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,8 +46,12 @@ class ServiceFragment() : BaseFragment<ServiceViewModel>() {
             //Editte de aynı seyler var gibi yapılmalı mı?
         }
         serviceAdapter.onDeleteClicked = { service ->
-            viewModel.deleteService(service.serviceId ?: "")
-            serviceAdapter.removeItem(service)
+            DeleteBottomSheet.newInstance("${service.serviceName} hizmetini silmek üzeresiniz!!!").apply {
+                onDeleteClicked = {
+                    viewModel.deleteService(service.serviceId ?: "")
+                    serviceAdapter.removeItem(service)
+                }
+            }.show(childFragmentManager, "DeleteBottomSheet")
         }
         serviceAdapter.onEditClicked = { service ->
             viewModel.selectItem(service)

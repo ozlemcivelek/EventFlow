@@ -71,7 +71,7 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
             findNavController().popBackStack()
         }
         binding.deleteButton.setOnClickListener {
-            DeleteBottomSheet.newInstance("falan filan").apply {
+            DeleteBottomSheet.newInstance("Etkinliği silmek üzeresiniz!!!").apply {
                 onDeleteClicked = {
                     selectedItemEvent()
                     addEventViewModel.deleteEvent()
