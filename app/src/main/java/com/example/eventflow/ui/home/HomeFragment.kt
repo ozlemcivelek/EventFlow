@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -45,6 +46,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         viewModel.filteredEvents.observe(viewLifecycleOwner) { filteredEvents ->
             eventAdapter.setItems(filteredEvents)
         }
+
         viewModel.eventsModel.observe(viewLifecycleOwner) { events ->
             setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
         }
@@ -56,13 +58,15 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             }
 
         }
-
+        viewModel.emptyState.observe(viewLifecycleOwner) {
+            binding.emptyState.isVisible = it
+            binding.recyclerView.isVisible = !it
+        }
         viewModel.getEvents()
     }
 
     private fun setFilteredEventsForDate() {
         val calendarView: CalendarView = binding.calendarView
-
         // initial Date and Filtered
         viewModel.filterEventsByDate(calendarView.date)
         // CalendarView filter on date change

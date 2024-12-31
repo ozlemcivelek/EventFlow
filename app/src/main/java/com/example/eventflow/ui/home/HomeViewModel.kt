@@ -27,6 +27,8 @@ class HomeViewModel @Inject constructor(
     private val _filteredEvents = MutableLiveData<List<EventModel>>()
     val filteredEvents: LiveData<List<EventModel>> get() = _filteredEvents
 
+    var emptyState: MutableLiveData<Boolean> = MutableLiveData(false)
+
     // Filter events by date
     fun filterEventsByDate(time: Long) {
         calendar.timeInMillis = time
@@ -37,6 +39,7 @@ class HomeViewModel @Inject constructor(
             event.copy(date = formatPrettyDate(event.prettyDate))
         }
         _filteredEvents.value = updatedEvents
+        emptyState.value = updatedEvents.isEmpty()
     }
 
     private fun formatPrettyDate(date: String): String {
