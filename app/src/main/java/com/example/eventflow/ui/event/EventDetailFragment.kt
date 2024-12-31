@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.eventflow.common.BaseFragment
 import com.example.eventflow.databinding.FragmentEventDetailBinding
+import com.example.eventflow.ui.DeleteBottomSheet
 import com.example.eventflow.ui.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -66,22 +67,26 @@ class EventDetailFragment : BaseFragment<EventDetailViewModel>() {
             }
         }
 
-        binding.backButton.setOnClickListener{
+        binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.deleteButton.setOnClickListener{
-            selectedItemEvent()
-            addEventViewModel.deleteEvent()
-            findNavController().popBackStack()
+        binding.deleteButton.setOnClickListener {
+            DeleteBottomSheet.newInstance("falan filan").apply {
+                onDeleteClicked = {
+                    selectedItemEvent()
+                    addEventViewModel.deleteEvent()
+                    findNavController().popBackStack()
+                }
+            }.show(childFragmentManager, "DeleteBottomSheet")
         }
-        binding.editButton.setOnClickListener{
+        binding.editButton.setOnClickListener {
             selectedItemEvent()
             val action = EventDetailFragmentDirections.actionEventDetailFragmentToAddEventFragment()
             findNavController().navigate(action)
         }
     }
 
-    private fun selectedItemEvent(){
+    private fun selectedItemEvent() {
         val event = viewModel.eventDetail.value!!
         sharedViewModel.selectedItem(event)
     }
