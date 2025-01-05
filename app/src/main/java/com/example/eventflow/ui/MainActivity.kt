@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             R.id.homeFragment,
             R.id.serviceFragment,
             R.id.reservationFragment,
-            R.id.accountFragment
         )
         val configuration = AppBarConfiguration(
             rootFragmentIds,
