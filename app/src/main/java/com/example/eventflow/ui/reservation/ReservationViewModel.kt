@@ -24,8 +24,7 @@ class ReservationViewModel @Inject constructor(
                 reservationUseCase()
             },
             result = { allReservations ->
-                if(allReservations.isEmpty()) emptyState.value = true
-                else emptyState.value = false
+                emptyState.value = allReservations.isEmpty()
                 val upcoming = allReservations.filter { it.remainingTime != "Geçti" }
                 val past = allReservations.filter { it.remainingTime == "Geçti" }
 
