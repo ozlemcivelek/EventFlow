@@ -14,11 +14,10 @@ class ServiceViewModel @Inject constructor(
     private val serviceRepository: ServiceRepository
 ) : BaseViewModel() {
 
-    private val db = FirebaseFirestore.getInstance()
-
     val serviceModel: MutableLiveData<List<ServiceModel>> = MutableLiveData()
-
     var service: ServiceModel = ServiceModel()
+
+    var emptyState: MutableLiveData<Boolean> = MutableLiveData(false)
 
     private val _selectedItem = MutableLiveData<ServiceModel?>(null)
     val selectedItem: LiveData<ServiceModel?> get() = _selectedItem
@@ -60,6 +59,7 @@ class ServiceViewModel @Inject constructor(
                 serviceRepository.getServices()
             }, result = {
                 serviceModel.value = it
+                emptyState.value = it.isEmpty()
             }
         )
     }

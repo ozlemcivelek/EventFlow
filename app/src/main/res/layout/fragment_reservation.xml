@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="Rezervasyonlarda Ara" />
+        android:iconifiedByDefault="false" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -25,13 +24,13 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rezervasyonlar" />
+            android:text="@string/reservations" />
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Geçmiş Rezervasyonlar" />
+            android:text="@string/last_reservations" />
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -64,12 +63,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="Henüz rezervasyon bulunmamaktadır."
+            android:text="@string/reservation_empty_state"
             android:textColor="@color/black"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

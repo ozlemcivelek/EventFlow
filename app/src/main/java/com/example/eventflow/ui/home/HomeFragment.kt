@@ -41,6 +41,10 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         binding.recyclerView.adapter = eventAdapter
         binding.calendarView.date = sharedViewModel.calendarTime
 
+        binding.profileAccount.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAccountFragment())
+        }
+
         sharedViewModel.selectedItem(null)
         // Observe filtered Events in viewModel
         viewModel.filteredEvents.observe(viewLifecycleOwner) { filteredEvents ->

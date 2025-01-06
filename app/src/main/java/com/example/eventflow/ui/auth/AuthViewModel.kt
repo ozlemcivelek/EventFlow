@@ -22,6 +22,12 @@ class AuthViewModel @Inject constructor(
     private val _signupFlow = MutableLiveData<Resource<FirebaseUser>?>(null)
     val signupFlow: LiveData<Resource<FirebaseUser>?> = _signupFlow
 
+    private val _updateFlow = MutableLiveData<Resource<Boolean>?>(null)
+    val updateFlow: LiveData<Resource<Boolean>?> = _updateFlow
+
+    private val _logoutStatus = MutableLiveData<Boolean>()
+    val logoutStatus: LiveData<Boolean> get() = _logoutStatus
+
     val currentUser: FirebaseUser?
         get() = repository.currentUser
 
@@ -41,13 +47,20 @@ class AuthViewModel @Inject constructor(
         _signupFlow.value = Resource.Loading
         val result = repository.signUp(name, email, password)
         _signupFlow.value = result
+    }
 
+    fun updateProfile(name: String) = viewModelScope.launch {
+        _updateFlow.value = Resource.Loading
+        val result = repository.updateProfile(name)
+        _updateFlow.value = result
     }
 
     fun logout() {
         repository.logout()
+        _logoutStatus.value = true
         _loginFlow.value = null
         _signupFlow.value = null
+        _updateFlow.value = null
     }
 
 }

@@ -12,15 +12,7 @@
         android:title="Hizmetler" />
 
     <item
-        android:id="@+id/add"
-        android:title="Oluştur" />
-
-    <item
         android:id="@+id/reservationFragment"
         android:icon="@drawable/ic_checklist"
         android:title="Rezervasyonlar" />
-    <item
-        android:id="@+id/accountFragment"
-        android:icon="@drawable/ic_account"
-        android:title="Hesap" />
 </menu>

@@ -34,6 +34,23 @@ class AuthRepositoryImpl @Inject constructor (
         }
     }
 
+    override suspend fun updateProfile(name: String): Resource<Boolean> {
+        val user = firebaseAuth.currentUser // FirebaseAuth üzerinden currentUser alınıyor
+        return try {
+            user?.let {
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name) // Kullanıcı adı güncelleniyor
+                    .build()
+
+                it.updateProfile(profileUpdates).await() // Asenkron işlem için `await` kullanılıyor
+                Resource.Success(true) // Güncelleme başarılı ise true döndür
+            } ?: Resource.Error(Exception("Kullanıcı bulunamadı")) // Kullanıcı yoksa hata döndür
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e) // Hata durumunda hatayı döndür
+        }
+    }
+
     override fun logout() {
         firebaseAuth.signOut()
     }

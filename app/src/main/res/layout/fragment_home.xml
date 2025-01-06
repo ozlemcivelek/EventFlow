@@ -8,6 +8,18 @@
     android:background="@color/dusty_white"
     tools:context=".ui.home.HomeFragment">
 
+    <ImageView
+        android:id="@+id/profileAccount"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/profile_picture"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_cardview_profile"
+        app:tint="@color/icon_color" />
+
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
@@ -49,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="Bu tarihte etkinlik bulunmamaktadır."
+            android:text="@string/event_empty_state"
             android:textColor="@color/black"
             android:textSize="12sp"/>
 

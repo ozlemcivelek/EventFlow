@@ -9,7 +9,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EMİN MİSİNİZ?"
+        android:text="@string/are_you_sure"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         android:id="@+id/subTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Şuan belirli bir işlemi silmek üzeresiniz."
+        android:text="@string/delete_bottom_sheet_text"
         android:textSize="14sp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,14 +39,14 @@
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="İPTAL"
+            android:text="@string/cancel"
             android:layout_marginEnd="8dp"/>
 
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EVET"
+            android:text="@string/yes"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

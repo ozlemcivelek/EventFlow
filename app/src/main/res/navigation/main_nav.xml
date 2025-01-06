@@ -38,6 +38,12 @@
         <action
             android:id="@+id/action_homeFragment_to_eventEditFragment"
             app:destination="@id/eventDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_accountFragment2"
+            app:destination="@id/accountFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEventFragment"
@@ -62,11 +68,7 @@
         android:name="com.example.eventflow.ui.reservation.ReservationFragment"
         android:label="fragment_reservation"
         tools:layout="@layout/fragment_reservation" />
-    <fragment
-        android:id="@+id/accountFragment"
-        android:name="com.example.eventflow.ui.account.AccountFragment"
-        android:label="fragment_account"
-        tools:layout="@layout/fragment_account" />
+
     <fragment
         android:id="@+id/serviceDetailFragment"
         android:name="com.example.eventflow.ui.service.ServiceDetailFragment"
@@ -90,4 +92,21 @@
             app:destination="@id/addEventFragment" />
 
     </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.eventflow.ui.account.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_accountFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.eventflow.ui.account.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
