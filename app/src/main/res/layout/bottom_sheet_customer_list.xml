@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
-        android:text="Müşteri Bilgileri" />
+        android:text="@string/customer_list_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/customerListRecyclerView"
