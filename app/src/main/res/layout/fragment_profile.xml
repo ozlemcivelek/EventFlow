@@ -36,7 +36,7 @@
         android:id="@+id/title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Son bir adım kaldı..."
+        android:text="Profilinizi değiştirin"
         android:layout_marginTop="36dp"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -48,7 +48,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kimlik doğrulaması için ad ve soyad bilgisinin kimlikteki ile aynı olması gerekmektedir."
+        android:text="@string/change_name_info"
         android:layout_marginTop="12dp"
         android:textSize="12sp"
         android:textAlignment="textStart"
@@ -74,46 +74,39 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/profileSurname"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:hint="Soyad"
-        app:boxBackgroundColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileName">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/profileSurnameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
     <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:checkedState="checked"
         android:buttonTint="@color/primary"
-        android:text="Kimlik doğrulamayı kabul ediyorum."
+        android:text="Evet, adımı değiştirmek istiyorum."
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileSurname" />
+        app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
+    <TextView
+        android:id="@+id/checkboxError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*Devam etmek için onay kutusunu işaretlemeniz gerekiyor."
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        android:textSize="9dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
-        android:id="@id/eventSaveButton"
+        android:id="@+id/profileUpdateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="32dp"
-        android:text="Onayla ve Üye Ol"
+        android:text="Onayla ve Gücelle"
         android:textColor="@color/white"
         android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkboxError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 

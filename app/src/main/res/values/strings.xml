@@ -12,4 +12,5 @@
     <string name="sign_up_upper">KAYIT OL</string>
     <string name="already_signup">Zaten üye misin?</string>
     <string name="login_lower">Giriş Yap</string>
+    <string name="change_name_info">Buradan kullanıcı adınızı değiştirebilirsiniz. Yeni kullanıcı adınızı girin ve güncellemeden önce onay kutusunu işaretleyin.</string>
 </resources>

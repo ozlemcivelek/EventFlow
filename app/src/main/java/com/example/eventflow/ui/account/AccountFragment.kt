@@ -1,10 +1,11 @@
 package com.example.eventflow.ui.account
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.eventflow.databinding.FragmentAccountBinding
@@ -32,7 +33,14 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.profileCompleteCardView.setOnClickListener{
+        viewModel.currentUser?.let {
+            binding.profileLinearLayout.isVisible = true
+            binding.profileEmailTextView.text = it.email.toString()
+            binding.profileCompleteCardView.isVisible = false
+            binding.profileNameTextView.text = it.displayName.toString()
+        }
+
+        binding.profileLinearLayout.setOnClickListener {
             findNavController().navigate(
                 AccountFragmentDirections.actionAccountFragmentToProfileFragment()
             )
