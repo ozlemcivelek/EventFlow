@@ -6,29 +6,35 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor (
-    private val firebaseAuth: FirebaseAuth)
-    : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(
+    private val firebaseAuth: FirebaseAuth
+) : AuthRepository {
 
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
     override suspend fun login(email: String, password: String): Resource<FirebaseUser> {
         return try {
-            val result = firebaseAuth.signInWithEmailAndPassword(email,password).await()
+            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             Resource.Success(result.user!!)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             return Resource.Error(e)
         }
     }
 
-    override suspend fun signUp(name: String, email: String, password: String): Resource<FirebaseUser> {
+    override suspend fun signUp(
+        name: String,
+        email: String,
+        password: String
+    ): Resource<FirebaseUser> {
         return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(email,password).await()
-            result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())?.await()
+            val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            result?.user?.updateProfile(
+                UserProfileChangeRequest.Builder().setDisplayName(name).build()
+            )?.await()
             Resource.Success(result.user!!)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             return Resource.Error(e)
         }
@@ -48,6 +54,20 @@ class AuthRepositoryImpl @Inject constructor (
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Error(e) // Hata durumunda hatayı döndür
+        }
+    }
+
+    override suspend fun changePassword(password: String): Resource<Boolean> {
+        return try {
+            val user = currentUser
+            if (user == null) {
+                Resource.Error(Exception("Kullanıcı bulunamadı"))
+            } else {
+                user.updatePassword(password).await()
+                Resource.Success(true)
+            }
+        } catch (e: Exception) {
+            Resource.Error(Exception("Hata oluştu: ${e.message}"))
         }
     }
 

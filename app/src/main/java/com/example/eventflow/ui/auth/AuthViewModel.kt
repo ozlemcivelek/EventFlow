@@ -25,6 +25,10 @@ class AuthViewModel @Inject constructor(
     private val _updateFlow = MutableLiveData<Resource<Boolean>?>(null)
     val updateFlow: LiveData<Resource<Boolean>?> = _updateFlow
 
+
+    private val _changePasswordFlow = MutableLiveData<Resource<Boolean>?>(null)
+    val changePasswordFlow: LiveData<Resource<Boolean>?> = _changePasswordFlow
+
     private val _logoutStatus = MutableLiveData<Boolean>()
     val logoutStatus: LiveData<Boolean> get() = _logoutStatus
 
@@ -32,18 +36,17 @@ class AuthViewModel @Inject constructor(
         get() = repository.currentUser
 
     init {
-        if(repository.currentUser != null) _loginFlow.value = Resource.Success(repository.currentUser!!)
+        if (repository.currentUser != null) _loginFlow.value =
+            Resource.Success(repository.currentUser!!)
     }
-
 
     fun login(email: String, password: String) = viewModelScope.launch {
         _loginFlow.value = Resource.Loading
         val result = repository.login(email, password)
         _loginFlow.value = result
-
     }
 
-    fun signUp(name:String, email: String, password: String) = viewModelScope.launch {
+    fun signUp(name: String, email: String, password: String) = viewModelScope.launch {
         _signupFlow.value = Resource.Loading
         val result = repository.signUp(name, email, password)
         _signupFlow.value = result
@@ -55,12 +58,19 @@ class AuthViewModel @Inject constructor(
         _updateFlow.value = result
     }
 
+    fun changePassword(password: String) = viewModelScope.launch {
+        _changePasswordFlow.value = Resource.Loading
+        val result = repository.changePassword(password)
+        _changePasswordFlow.value = result
+    }
+
     fun logout() {
         repository.logout()
         _logoutStatus.value = true
         _loginFlow.value = null
         _signupFlow.value = null
         _updateFlow.value = null
+        _changePasswordFlow.value = null
     }
 
 }

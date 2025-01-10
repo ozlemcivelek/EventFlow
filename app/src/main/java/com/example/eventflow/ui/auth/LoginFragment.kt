@@ -46,29 +46,25 @@ class LoginFragment : Fragment() {
             )
 
             viewModel.loginFlow.observe(viewLifecycleOwner) {
+                if (it is Resource.Loading)
+                    (activity as MainActivity).showProgress()
+                else
+                    (activity as MainActivity).hideProgress()
                 when (it) {
                     is Resource.Error -> {
                         //HATA mesajina göre ekranda işlem yapma
-                        (activity as MainActivity).hideProgress()
                         Log.d("TAG", "HATA MESAJI: ${it.exception.message} ")
                         Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT)
                             .show()
                     }
 
-                    Resource.Loading -> {
-                        //TODO show loading
-                        (activity as MainActivity).showProgress()
-                        //Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
-                    }
-
                     is Resource.Success -> {
-                        (activity as MainActivity).hideProgress()
                         if (findNavController().currentDestination?.id == R.id.loginFragment)
                             findNavController().navigate(LoginFragmentDirections.toHome())
                         //Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_SHORT).show()
                     }
 
-                    null -> TODO()
+                    else -> {}
                 }
             }
         }
