@@ -26,7 +26,7 @@ class AccountFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -45,29 +45,29 @@ class AccountFragment : Fragment() {
 
         binding.changePasswordCardView.setOnClickListener {
             ChangePasswordBottomSheet().apply {
-                onChangePasswordClicked = { newPassword ->
-                    viewModel.changePassword(newPassword)
+                onChangePasswordClicked = { currentPassword, newPassword ->
+                    viewModel.changePassword(currentPassword, newPassword)
                 }
             }.show(childFragmentManager, "ChangePasswordBottomSheet")
-            viewModel.changePasswordFlow.observe(viewLifecycleOwner) {
-                if (it is Resource.Loading)
-                    (activity as MainActivity).showProgress()
-                else
-                    (activity as MainActivity).hideProgress()
+        }
+        viewModel.changePasswordFlow.observe(viewLifecycleOwner) {
+            if (it is Resource.Loading)
+                (activity as MainActivity).showProgress()
+            else
+                (activity as MainActivity).hideProgress()
 
-                when (it) {
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                    is Resource.Success -> {
-                        //Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_SHORT).show()
-                        viewModel.logout()
-                    }
-
-                    else -> Unit
+            when (it) {
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
+
+                is Resource.Success -> {
+                    //Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_SHORT).show()
+                    viewModel.logout()
+                }
+
+                else -> Unit
             }
         }
 

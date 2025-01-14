@@ -58,9 +58,9 @@ class AuthViewModel @Inject constructor(
         _updateFlow.value = result
     }
 
-    fun changePassword(password: String) = viewModelScope.launch {
+    fun changePassword(currentPassword: String, password: String) = viewModelScope.launch {
         _changePasswordFlow.value = Resource.Loading
-        val result = repository.changePassword(password)
+        val result = repository.changePassword(currentPassword, password)
         _changePasswordFlow.value = result
     }
 

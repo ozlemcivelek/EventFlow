@@ -12,7 +12,7 @@ class ChangePasswordBottomSheet() : BottomSheetDialogFragment() {
     private var _binding: BottomSheetChangePasswordBinding? = null
     private val binding get() = _binding!!
 
-    var onChangePasswordClicked: (String) -> Unit = {}
+    var onChangePasswordClicked: (String, String) -> Unit = {a,b ->}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -30,6 +30,9 @@ class ChangePasswordBottomSheet() : BottomSheetDialogFragment() {
 
         binding.updatePasswordButton.setOnClickListener {
             onChangePasswordClicked.invoke(
+                // TODO: Boş mu, 6 karakter mi gibi kontroller eklenmeli.
+                // Fixme: InputType password olmalı.
+                binding.passwordTextInputLayout.editText?.text.toString(),
                 binding.newPasswordTextInputLayout.editText?.text.toString()
             )
             dismiss()
