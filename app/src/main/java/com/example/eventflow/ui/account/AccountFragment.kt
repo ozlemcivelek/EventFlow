@@ -63,7 +63,7 @@ class AccountFragment : Fragment() {
                 }
 
                 is Resource.Success -> {
-                    //Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_LONG).show()
                     viewModel.logout()
                 }
 
@@ -83,7 +83,7 @@ class AccountFragment : Fragment() {
 
         viewModel.logoutStatus.observe(viewLifecycleOwner) {
             if (it) {
-                findNavController().navigate(
+               findNavController().navigate(
                     AccountFragmentDirections.actionAccountFragmentToLoginFragment()
                 )
             }

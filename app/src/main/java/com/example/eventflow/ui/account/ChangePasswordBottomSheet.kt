@@ -31,7 +31,6 @@ class ChangePasswordBottomSheet() : BottomSheetDialogFragment() {
         binding.updatePasswordButton.setOnClickListener {
             onChangePasswordClicked.invoke(
                 // TODO: Boş mu, 6 karakter mi gibi kontroller eklenmeli.
-                // Fixme: InputType password olmalı.
                 binding.passwordTextInputLayout.editText?.text.toString(),
                 binding.newPasswordTextInputLayout.editText?.text.toString()
             )
