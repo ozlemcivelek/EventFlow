@@ -148,7 +148,11 @@ class AddEventViewModel @Inject constructor(
     fun updateEvent() {
         sendRequest(
             call = {
-                eventRepository.updateEvent(event)
+                val success = eventRepository.updateEvent(event)
+                if (success) {
+                    scheduleNotificationUseCase.scheduleNotification(event)
+                }
+                success
             }, result = {
                 _updateOrSaveSuccess.value = it
             }

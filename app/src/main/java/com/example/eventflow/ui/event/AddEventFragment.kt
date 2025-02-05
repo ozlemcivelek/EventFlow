@@ -4,15 +4,14 @@ import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.EditText
-import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -51,6 +50,19 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
     private val serviceViewModel by viewModels<ServiceViewModel>()
 
     private var isCustomer: Boolean? = false
+    private val reminderListener: OnCheckedChangeListener = object : OnCheckedChangeListener {
+        override fun onCheckedChanged(
+            buttonView: CompoundButton?,
+            isChecked: Boolean,
+        ) {
+            if (isChecked) {
+                viewModel.setReminder(true)
+                openCustomReminderBottomSheet()
+            } else {
+                viewModel.setReminder(false)
+            }
+        }
+    }
     val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -248,15 +260,7 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
     }
 
     private fun reminder(reminder: MaterialSwitch) {
-        reminder.isChecked = false
-        reminder.setOnCheckedChangeListener { buttonView, isChecked->
-            if (isChecked) {
-                viewModel.setReminder(true)
-                openCustomReminderBottomSheet()
-            } else {
-                viewModel.setReminder(false)
-            }
-        }
+        reminder.setOnCheckedChangeListener(reminderListener)
     }
 
     private fun openCustomReminderBottomSheet() {
@@ -276,6 +280,9 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         binding.pageNewTitle.isVisible = true
         binding.eventUpdateButton.isVisible = true
         binding.eventSaveButton.isVisible = false
+        binding.reminderSwitch.setOnCheckedChangeListener(null)
+        binding.reminderSwitch.isChecked = eventDetail.reminder
+        binding.reminderSwitch.setOnCheckedChangeListener(reminderListener)
 
         binding.eventTitleEditText.setText(eventDetail.title)
         binding.eventDescriptionEditText.setText(eventDetail.description)
