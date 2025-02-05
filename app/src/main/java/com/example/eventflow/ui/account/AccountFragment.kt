@@ -43,6 +43,11 @@ class AccountFragment : Fragment() {
             binding.profileNameTextView.text = it.displayName.toString()
         }
 
+        binding.notificationCardView.setOnClickListener {
+            Toast.makeText(requireContext(), "Bildirim ayarları düzenlenecek!", Toast.LENGTH_SHORT)
+                .show()
+        }
+
         binding.changePasswordCardView.setOnClickListener {
             ChangePasswordBottomSheet().apply {
                 onChangePasswordClicked = { currentPassword, newPassword ->
@@ -83,7 +88,7 @@ class AccountFragment : Fragment() {
 
         viewModel.logoutStatus.observe(viewLifecycleOwner) {
             if (it) {
-               findNavController().navigate(
+                findNavController().navigate(
                     AccountFragmentDirections.actionAccountFragmentToLoginFragment()
                 )
             }

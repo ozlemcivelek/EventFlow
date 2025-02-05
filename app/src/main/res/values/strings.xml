@@ -92,4 +92,5 @@
     <string name="customer_edit_phone">Telefon</string>
     <string name="ptal">İptal</string>
     <string name="customer_edit_save">KAYDET</string>
+    <string name="reminder">Hatırlatıcı</string>
 </resources>

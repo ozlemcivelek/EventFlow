@@ -20,6 +20,7 @@ class GetEventUseCase @Inject constructor(
                     date = event.date,
                     startTime = event.startTime,
                     endTime = event.endTime,
+                    reminder = event.reminder,
                     location = event.location,
                     category = event.category,
                     serviceList = event.serviceList,

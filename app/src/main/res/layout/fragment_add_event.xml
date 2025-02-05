@@ -284,6 +284,20 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/reminderSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reminder"
+        android:padding="8dp"
+        android:layout_marginTop="4dp"
+        android:enabled="true"
+        app:trackTint="@color/primary"
+        app:thumbTint="@color/dusty_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventEndTime"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Event Location -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/eventLocation"
@@ -295,7 +309,7 @@
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventStartTime">
+        app:layout_constraintTop_toBottomOf="@+id/reminderSwitch">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventLocationEditText"

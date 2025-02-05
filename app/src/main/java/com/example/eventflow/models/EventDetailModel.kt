@@ -14,6 +14,7 @@ data class EventDetailModel(
     val customerName: String?,
     val customerPhone: String?,
     val customerEmail: String?,
+    val reminder: Boolean? = false,
 ) {
     constructor() : this("", "", "", "", "", "", "", "", emptyList(), null, null, null, null)
 }

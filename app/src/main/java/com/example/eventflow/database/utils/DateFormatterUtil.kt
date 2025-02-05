@@ -6,7 +6,7 @@ import java.util.Locale
 
 object DateFormatterUtil {
     fun calculateRemainingTime(eventDate: String, eventStartTime: String): String {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         val currentDateTime = Date()
 
         return try {
