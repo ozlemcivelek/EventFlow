@@ -11,6 +11,7 @@ fun EventDetailModel.toEvent() = EventModel(
     date = date,
     startTime = startTime,
     endTime = endTime,
+    reminder = reminder == true,
     location = location,
     customerRef = customerRef,
     serviceList = serviceList,

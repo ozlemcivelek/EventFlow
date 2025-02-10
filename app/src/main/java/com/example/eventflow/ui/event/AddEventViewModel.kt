@@ -1,11 +1,13 @@
 package com.example.eventflow.ui.event
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.eventflow.common.BaseViewModel
 import com.example.eventflow.database.repository.CustomerRepository
 import com.example.eventflow.database.repository.EventRepository
 import com.example.eventflow.database.usecase.GetEventUseCase
+import com.example.eventflow.database.usecase.ScheduleNotificationUseCase
 import com.example.eventflow.mapper.toEvent
 import com.example.eventflow.models.CustomerModel
 import com.example.eventflow.models.EventDetailModel
@@ -19,6 +21,8 @@ class AddEventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val customerRepository: CustomerRepository,
     private val eventUseCase: GetEventUseCase,
+    private val scheduleNotificationUseCase: ScheduleNotificationUseCase,
+    private val sharedPreferences: SharedPreferences,
 ) : BaseViewModel() {
 
     val calendar by lazy {
@@ -38,6 +42,10 @@ class AddEventViewModel @Inject constructor(
 
     var event: EventModel = EventModel()
     var customer: CustomerModel = CustomerModel()
+
+    val _reminderTime: Int = sharedPreferences.getInt("reminder_time", 0) / 60
+    val reminderTime: Int
+        get() = _reminderTime
 
     fun setEventFromEventDetail(eventDetailModel: EventDetailModel) {
         event = eventDetailModel.toEvent()
@@ -115,20 +123,36 @@ class AddEventViewModel @Inject constructor(
         event = event.copy(serviceList = services)
     }
 
+    fun setReminder(reminder: Boolean) {
+        event = event.copy(reminder = reminder)
+    }
+
     fun addEvent() {
         sendRequest(
             call = {
-                eventRepository.addEvent(event)
+                val success = eventRepository.addEvent(event)
+                if (success) {
+                    scheduleNotificationUseCase.scheduleNotification(event)
+                }
+                success
             }, result = {
                 _updateOrSaveSuccess.value = it
             }
         )
     }
 
+    fun updateReminderTime(time: Int) {
+        sharedPreferences.edit().putInt("reminder_time", time).apply()
+    }
+
     fun updateEvent() {
         sendRequest(
             call = {
-                eventRepository.updateEvent(event)
+                val success = eventRepository.updateEvent(event)
+                if (success) {
+                    scheduleNotificationUseCase.scheduleNotification(event)
+                }
+                success
             }, result = {
                 _updateOrSaveSuccess.value = it
             }

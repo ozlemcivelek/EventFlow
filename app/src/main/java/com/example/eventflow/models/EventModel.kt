@@ -13,6 +13,7 @@ data class EventModel(
     val location: String,
     var customerRef: String? = null,
     var serviceList: List<String>? = null,
+    val reminder: Boolean = false,
 ) {
     constructor() : this("", "", "", "", "", "", "", "")
 

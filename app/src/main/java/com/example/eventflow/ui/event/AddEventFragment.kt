@@ -1,13 +1,20 @@
 package com.example.eventflow.ui.event
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -23,9 +30,11 @@ import com.example.eventflow.models.ServiceModel
 import com.example.eventflow.ui.SharedViewModel
 import com.example.eventflow.ui.customer.CustomerEditBottomSheet
 import com.example.eventflow.ui.customer.CustomerListBottomSheet
+import com.example.eventflow.ui.notification.ReminderBottomSheet
 import com.example.eventflow.ui.service.ServiceViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.materialswitch.MaterialSwitch
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import kotlin.getValue
@@ -41,9 +50,38 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
     private val serviceViewModel by viewModels<ServiceViewModel>()
 
     private var isCustomer: Boolean? = false
+    private val reminderListener: OnCheckedChangeListener = object : OnCheckedChangeListener {
+        override fun onCheckedChanged(
+            buttonView: CompoundButton?,
+            isChecked: Boolean,
+        ) {
+            if (isChecked) {
+                viewModel.setReminder(true)
+                openCustomReminderBottomSheet()
+            } else {
+                viewModel.setReminder(false)
+            }
+        }
+    }
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permission is granted
+                showReminderBottomSheet()
+            } else {
+                // Permission is denied
+                Toast.makeText(
+                    requireContext(),
+                    "Bildirim izni reddedildi",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentAddEventBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -141,6 +179,8 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
             viewModel.setEndTime(text.toString())
         }
 
+        reminder(binding.reminderSwitch)
+
         binding.eventLocationEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setLocation(text.toString())
         }
@@ -164,13 +204,13 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         binding.eventSaveButton.setOnClickListener {
             if (!viewModel.isDataEventValid()) {
                 Toast.makeText(
-                    requireContext(), "Eksik alanlar var, kontrol et", Toast.LENGTH_SHORT
+                    requireContext(),
+                    "Eksik alanlar var, kontrol et",
+                    Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }
-
             viewModel.addEvent()
-
         }
 
         binding.eventUpdateButton.setOnClickListener {
@@ -219,6 +259,14 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         viewModel.getCustomers()
     }
 
+    private fun reminder(reminder: MaterialSwitch) {
+        reminder.setOnCheckedChangeListener(reminderListener)
+    }
+
+    private fun openCustomReminderBottomSheet() {
+        checkNotificationPermission()
+    }
+
     private fun prepareSelectedCustomerData(eventDetail: EventDetailModel) {
         viewModel.setEventFromEventDetail(eventDetail)
         if (eventDetail.customerName != null)
@@ -232,6 +280,9 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         binding.pageNewTitle.isVisible = true
         binding.eventUpdateButton.isVisible = true
         binding.eventSaveButton.isVisible = false
+        binding.reminderSwitch.setOnCheckedChangeListener(null)
+        binding.reminderSwitch.isChecked = eventDetail.reminder
+        binding.reminderSwitch.setOnCheckedChangeListener(reminderListener)
 
         binding.eventTitleEditText.setText(eventDetail.title)
         binding.eventDescriptionEditText.setText(eventDetail.description)
@@ -360,4 +411,36 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         }
     }
 
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Permission is already granted
+                showReminderBottomSheet()
+            } else {
+                // Permission is not granted, request it
+                requestNotificationPermission()
+            }
+        } else {
+            // No need to request permission on older versions
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Bildirim İzni")
+            .setMessage("Bildirim gösterebilmek için izin vermelisin")
+            .setPositiveButton("İzin iste") { a, b ->
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }.show()
+    }
+
+    private fun showReminderBottomSheet() {
+        ReminderBottomSheet(viewModel.reminderTime) {
+            viewModel.updateReminderTime(it)
+        }.show(parentFragmentManager, "reminderBottomSheet.tag")
+    }
 }
