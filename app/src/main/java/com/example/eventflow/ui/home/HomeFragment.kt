@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -40,26 +41,36 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         binding.recyclerView.adapter = eventAdapter
         binding.calendarView.date = sharedViewModel.calendarTime
 
+        binding.profileAccount.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAccountFragment())
+        }
+
         sharedViewModel.selectedItem(null)
         // Observe filtered Events in viewModel
         viewModel.filteredEvents.observe(viewLifecycleOwner) { filteredEvents ->
             eventAdapter.setItems(filteredEvents)
         }
+
         viewModel.eventsModel.observe(viewLifecycleOwner) { events ->
             setFilteredEventsForDate() // Veriler geldikten sonra filtreleme işlemini başlat
         }
         eventAdapter.onItemClicked = { event ->
-            sharedViewModel.selectedItem(event)
-            val action = HomeFragmentDirections.actionHomeFragmentToEventDetailFragment()
-            findNavController().navigate(action)
-        }
+            //TODO: burada yeni bir sayfada verileri gösterip düzenleme ve silme yapılabilir.
+            event.eventId?.let {
+                val action = HomeFragmentDirections.actionHomeFragmentToEventEditFragment(it)
+                findNavController().navigate(action)
+            }
 
+        }
+        viewModel.emptyState.observe(viewLifecycleOwner) {
+            binding.emptyState.isVisible = it
+            binding.recyclerView.isVisible = !it
+        }
         viewModel.getEvents()
     }
 
     private fun setFilteredEventsForDate() {
         val calendarView: CalendarView = binding.calendarView
-
         // initial Date and Filtered
         viewModel.filterEventsByDate(calendarView.date)
         // CalendarView filter on date change

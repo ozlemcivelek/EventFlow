@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             R.id.homeFragment,
             R.id.serviceFragment,
             R.id.reservationFragment,
-            R.id.accountFragment
         )
         val configuration = AppBarConfiguration(
             rootFragmentIds,
@@ -47,9 +46,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener {
             when (navController.currentDestination?.id) {
-                R.id.homeFragment -> navController.navigate(R.id.eventDetailFragment)
+                R.id.homeFragment -> navController.navigate(R.id.addEventFragment)
                 R.id.serviceFragment -> navController.navigate(R.id.serviceDetailFragment)
-                R.id.reservationFragment -> navController.navigate(R.id.eventDetailFragment)
+                R.id.reservationFragment -> navController.navigate(R.id.addEventFragment)
                 R.id.accountFragment -> Toast.makeText(this, "Hesap Detayı", Toast.LENGTH_SHORT)
                     .show()
 

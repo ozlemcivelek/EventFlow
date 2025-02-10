@@ -22,32 +22,55 @@ class AuthViewModel @Inject constructor(
     private val _signupFlow = MutableLiveData<Resource<FirebaseUser>?>(null)
     val signupFlow: LiveData<Resource<FirebaseUser>?> = _signupFlow
 
+    private val _updateFlow = MutableLiveData<Resource<Boolean>?>(null)
+    val updateFlow: LiveData<Resource<Boolean>?> = _updateFlow
+
+
+    private val _changePasswordFlow = MutableLiveData<Resource<Boolean>?>(null)
+    val changePasswordFlow: LiveData<Resource<Boolean>?> = _changePasswordFlow
+
+    private val _logoutStatus = MutableLiveData<Boolean>()
+    val logoutStatus: LiveData<Boolean> get() = _logoutStatus
+
     val currentUser: FirebaseUser?
         get() = repository.currentUser
 
     init {
-        if(repository.currentUser != null) _loginFlow.value = Resource.Success(repository.currentUser!!)
+        if (repository.currentUser != null) _loginFlow.value =
+            Resource.Success(repository.currentUser!!)
     }
-
 
     fun login(email: String, password: String) = viewModelScope.launch {
         _loginFlow.value = Resource.Loading
         val result = repository.login(email, password)
         _loginFlow.value = result
-
     }
 
-    fun signUp(name:String, email: String, password: String) = viewModelScope.launch {
+    fun signUp(name: String, email: String, password: String) = viewModelScope.launch {
         _signupFlow.value = Resource.Loading
         val result = repository.signUp(name, email, password)
         _signupFlow.value = result
+    }
 
+    fun updateProfile(name: String) = viewModelScope.launch {
+        _updateFlow.value = Resource.Loading
+        val result = repository.updateProfile(name)
+        _updateFlow.value = result
+    }
+
+    fun changePassword(currentPassword: String, password: String) = viewModelScope.launch {
+        _changePasswordFlow.value = Resource.Loading
+        val result = repository.changePassword(currentPassword, password)
+        _changePasswordFlow.value = result
     }
 
     fun logout() {
         repository.logout()
+        _logoutStatus.value = true
         _loginFlow.value = null
         _signupFlow.value = null
+        _updateFlow.value = null
+        _changePasswordFlow.value = null
     }
 
 }

@@ -25,17 +25,19 @@ class GetReservationsUseCase @Inject constructor(
                 customerPhone = customerDoc?.phone
             }
 
-            val remainingTime = DateFormatterUtil.calculateRemainingTime(event.date, event.startTime)
+            val remainingTime =
+                DateFormatterUtil.calculateRemainingTime(event.date, event.startTime)
             val reservation = ReservationModel(
                 id = event.customerRef ?: "",
                 name = event.title,
                 date = event.date,
-                time = "${event.startTime} - ${event.endTime}",
+                startTime = event.startTime,
+                endTime = event.endTime,
                 customerName = customerName,
                 customerPhone = customerPhone,
-                remainingTime = remainingTime
+                remainingTime = remainingTime,
+                reminder = event.reminder,
             )
-
             reservations.add(reservation)
         }
         return reservations

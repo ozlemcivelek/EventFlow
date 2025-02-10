@@ -8,13 +8,12 @@ import com.example.eventflow.models.ServiceModel
 
 class ServiceAdapter: RecyclerView.Adapter<ServiceAdapter.ServiceViewHolder>() {
 
-    private val serviceList: MutableList<ServiceModel> = mutableListOf()
+    val serviceList: MutableList<ServiceModel> = mutableListOf()
     var onItemClicked: (ServiceModel) -> Unit = {}
 
     var onDeleteClicked: (ServiceModel) -> Unit = {}
 
     var onEditClicked: (ServiceModel) -> Unit = {}
-
 
     fun removeItem(item: ServiceModel) {
         val index = serviceList.indexOf(item)

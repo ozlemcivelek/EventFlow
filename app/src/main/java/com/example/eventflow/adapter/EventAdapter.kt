@@ -7,9 +7,7 @@ import com.example.eventflow.models.EventModel
 import com.example.eventflow.databinding.EventItemBinding
 
 class EventAdapter :
-    RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
-
-    private val eventList: MutableList<EventModel> = mutableListOf()
+    RecyclerView.Adapter<EventAdapter.EventViewHolder>() { val eventList: MutableList<EventModel> = mutableListOf()
     var onItemClicked: (EventModel) -> Unit = {}
 
     fun setItems(items: List<EventModel>) {

@@ -9,12 +9,19 @@ class EventRepositoryImpl : EventRepository {
 
     override suspend fun getAllEvents(): List<EventModel> {
         val result = db.collection("events").get().await()
-        val events = result.mapNotNull { it.toObject(EventModel::class.java) }
+        val events = result.mapNotNull {
+            val event = it.toObject(EventModel::class.java)
+            event.eventId = it.id
+            event
+        }
         return events
     }
 
     override suspend fun getEventById(eventId: String): EventModel? {
-        TODO("Not yet implemented")
+        val doc = db.collection("events").document(eventId).get().await()
+        return doc.toObject(EventModel::class.java).apply {
+            this?.eventId = doc.id
+        }
     }
 
     override suspend fun addEvent(event: EventModel): Boolean {
@@ -23,15 +30,16 @@ class EventRepositoryImpl : EventRepository {
     }
 
 
-    override suspend fun updateEvent(
-        eventId: String,
-        event: EventModel
-    ): Boolean {
-        db.collection("events").document(eventId).set(event).await()
+    override suspend fun updateEvent(event: EventModel): Boolean {
+        val id = event.eventId ?: return false
+        db.collection("events").document(id).set(event).await()
         return true
     }
 
-    override suspend fun deleteEvent(eventId: String): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun deleteEvent(event: EventModel): Boolean {
+        val id = event.eventId ?: return false
+        db.collection("events").document(id).delete().await()
+        return true
+
     }
 }

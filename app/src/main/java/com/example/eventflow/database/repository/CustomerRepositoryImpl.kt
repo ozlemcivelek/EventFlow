@@ -19,7 +19,9 @@ class CustomerRepositoryImpl: CustomerRepository {
 
     override suspend fun getCustomerById(customerId: String): CustomerModel? {
         val doc = db.collection("customers").document(customerId).get().await()
-        return doc.toObject(CustomerModel::class.java)
+        return doc.toObject(CustomerModel::class.java).apply {
+            this?.customerRef = customerId
+        }
     }
 
     override suspend fun addCustomer(customer: CustomerModel): String {

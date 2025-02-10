@@ -8,7 +8,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ad Soyad">
+        android:hint="@string/customer_edit_name">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameEditText"
             android:inputType="text"
@@ -19,7 +19,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="E-Posta">
+        android:hint="@string/customer_edit_email">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
             android:inputType="textEmailAddress"
@@ -30,7 +30,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Telefon">
+        android:hint="@string/customer_edit_phone">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneEditText"
             android:inputType="number"
@@ -49,13 +49,13 @@
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="İptal" />
+            android:text="@string/cancel" />
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kaydet"
+            android:text="@string/customer_edit_save"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 </LinearLayout>
