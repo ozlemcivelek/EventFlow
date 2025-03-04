@@ -31,14 +31,16 @@ class AppModule {
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 
     @Provides
-    fun provideEventRepository(): EventRepository = EventRepositoryImpl()
+    fun provideEventRepository(firebaseAuth: FirebaseAuth): EventRepository =
+        EventRepositoryImpl(firebaseAuth)
 
     @Provides
-    fun provideServiceRepository(): ServiceRepository = ServiceRepositoryImpl()
-
+    fun provideServiceRepository(firebaseAuth: FirebaseAuth): ServiceRepository =
+        ServiceRepositoryImpl(firebaseAuth)
 
     @Provides
-    fun provideCustomerRepository(): CustomerRepository = CustomerRepositoryImpl()
+    fun provideCustomerRepository(firebaseAuth: FirebaseAuth): CustomerRepository =
+        CustomerRepositoryImpl(firebaseAuth)
 
     @Provides
     fun provideReservationUseCase(
