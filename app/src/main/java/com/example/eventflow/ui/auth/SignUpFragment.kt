@@ -53,13 +53,11 @@ class SignUpFragment : Fragment() {
 
                     Resource.Loading -> {
                         (activity as MainActivity).showProgress()
-                        //Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
                     }
 
                     is Resource.Success -> {
                         (activity as MainActivity).hideProgress()
-                        //Log.d("TAG", "başarılı giris: ${it.result.uid}")
-                        //Toast.makeText(requireContext(), it.result.uid, Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(SignUpFragmentDirections.toLogin())
                     }
 
                     null -> TODO()
