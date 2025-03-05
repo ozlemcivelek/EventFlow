@@ -1,7 +1,6 @@
 package com.example.eventflow.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,14 +56,14 @@ class SignUpFragment : Fragment() {
 
                     is Resource.Success -> {
                         (activity as MainActivity).hideProgress()
-                        findNavController().navigate(SignUpFragmentDirections.toLogin())
+                        findNavController().navigate(
+                            SignUpFragmentDirections.toLogin()
+                        )
                     }
-
                     null -> TODO()
                 }
 
             }
-
         }
 
         binding.loginTextView.setOnClickListener {

@@ -67,10 +67,6 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-
-//        if (viewModel.currentUser != null) {
-//            findNavController().navigate(LoginFragmentDirections.toHome())
-//        }
     }
 
     override fun onDestroyView() {
