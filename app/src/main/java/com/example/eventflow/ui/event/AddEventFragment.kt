@@ -344,6 +344,11 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
             binding.serviceTitle.isVisible = false
             binding.serviceAddTextView.isVisible = true
         }
+        else{
+            binding.chipGroupScrollView.isVisible = true
+            binding.serviceTitle.isVisible = true
+            binding.serviceAddTextView.isVisible = false
+        }
     }
 
     private fun getSelectedChips(chipGroup: ChipGroup = binding.chipGroup): List<String> {
