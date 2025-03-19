@@ -46,8 +46,8 @@ MVVM, kodu modüler bir şekilde düzenlemeye olanak tanır. Model, View ve View
 
 ## Ekran Görüntüleri
 
-<img src="screenshots/img_login.png" alt="görsel 1" width="360" height="720"/> <img src="screenshots/img_signin.png" alt="görsel 2" width="360" height="720"/> <img src="screenshots/img_event.png" alt="görsel 3" width="360" height="720"/> 
-<img src="screenshots/img_profile.png" alt="görsel 1" width="360" height="720"/> <img src="screenshots/img_profile_change.png" alt="görsel 2" width="360" height="720"/> <img src="screenshots/img_change_password.png" alt="görsel 3" width="360" height="720"/> 
-<img src="screenshots/img_event.png" alt="görsel 1" width="360" height="720"/> <img src="screenshots/img_event_1.png" alt="görsel 2" width="360" height="720"/> <img src="screenshots/img_event_empty.png" alt="görsel 3" width="360" height="720"/> 
-<img src="screenshots/img_service.png" alt="görsel 1" width="360" height="720"/> <img src="screenshots/img_empty_service.png" alt="görsel 2" width="360" height="720"/> <img src="screenshots/img_service_list.png" alt="görsel 3" width="360" height="720"/> 
-<img src="screenshots/img_reservation_list.png" alt="görsel 1" width="360" height="720"/>
+<img src="screenshots/img_login.png" alt="görsel 1" width="324" height="720"/> <img src="screenshots/img_signin.png" alt="görsel 2" width="324" height="720"/> <img src="screenshots/img_event.png" alt="görsel 3" width="324" height="720"/> 
+<img src="screenshots/img_profile.png" alt="görsel 1" width="324" height="720"/> <img src="screenshots/img_profile_change.png" alt="görsel 2" width="324" height="720"/> <img src="screenshots/img_change_password.png" alt="görsel 3" width="324" height="720"/> 
+<img src="screenshots/img_event.png" alt="görsel 1" width="324" height="720"/> <img src="screenshots/img_event_1.png" alt="görsel 2" width="324" height="720"/> <img src="screenshots/img_event_empty.png" alt="görsel 3" width="324" height="720"/> 
+<img src="screenshots/img_service.png" alt="görsel 1" width="324" height="720"/> <img src="screenshots/img_empty_service.png" alt="görsel 2" width="324" height="720"/> <img src="screenshots/img_service_list.png" alt="görsel 3" width="324" height="720"/> 
+<img src="screenshots/img_reservation_list.png" alt="görsel 1" width="324" height="720"/>
