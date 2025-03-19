@@ -61,16 +61,11 @@ class LoginFragment : Fragment() {
                     is Resource.Success -> {
                         if (findNavController().currentDestination?.id == R.id.loginFragment)
                             findNavController().navigate(LoginFragmentDirections.toHome())
-                        //Toast.makeText(requireContext(), it.result.toString(), Toast.LENGTH_SHORT).show()
                     }
 
                     else -> {}
                 }
             }
-        }
-
-        if (viewModel.currentUser != null) {
-            findNavController().navigate(LoginFragmentDirections.toHome())
         }
     }
 
