@@ -57,7 +57,7 @@ class SignUpFragment : Fragment() {
                     is Resource.Success -> {
                         (activity as MainActivity).hideProgress()
                         findNavController().navigate(
-                            SignUpFragmentDirections.toLogin()
+                            SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
                         )
                     }
                     null -> TODO()
@@ -67,7 +67,9 @@ class SignUpFragment : Fragment() {
         }
 
         binding.loginTextView.setOnClickListener {
-            findNavController().navigate(SignUpFragmentDirections.toLogin())
+            findNavController().navigate(
+                SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
+            )
         }
     }
 
