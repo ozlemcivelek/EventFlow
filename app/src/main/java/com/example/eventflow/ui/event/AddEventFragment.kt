@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -35,6 +34,7 @@ import com.example.eventflow.ui.service.ServiceViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import kotlin.getValue
@@ -170,13 +170,25 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         }
 
         binding.eventStartTimeEditText.doOnTextChanged { text, _, _, _ ->
-            timeFormat(text.toString(), binding.eventStartTimeEditText)
+            timeFormat(text.toString(), binding.eventStartTime)
             viewModel.setStartTime(text.toString())
         }
 
+        binding.eventStartTimeEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                checkTime(binding.eventStartTime, true)
+            }
+        }
+
         binding.eventEndTimeEditText.doOnTextChanged { text, _, _, _ ->
-            timeFormat(text.toString(), binding.eventEndTimeEditText)
+            timeFormat(text.toString(), binding.eventEndTime)
             viewModel.setEndTime(text.toString())
+        }
+
+        binding.eventEndTimeEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                checkTime(binding.eventEndTime, true)
+            }
         }
 
         reminder(binding.reminderSwitch)
@@ -343,8 +355,7 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
             binding.chipGroupScrollView.isVisible = false
             binding.serviceTitle.isVisible = false
             binding.serviceAddTextView.isVisible = true
-        }
-        else{
+        } else {
             binding.chipGroupScrollView.isVisible = true
             binding.serviceTitle.isVisible = true
             binding.serviceAddTextView.isVisible = false
@@ -401,18 +412,40 @@ class AddEventFragment : BaseFragment<AddEventViewModel>() {
         }, hour, minute, true).show()
     }
 
-    private fun timeFormat(time: String, editText: EditText) {
+    private fun timeFormat(time: String, til: TextInputLayout) {
         val input = time?.replace(":", "") ?: ""
+        til.error = null
         if (input.length <= 4) {
+
             val formatted = when {
                 input.length >= 3 -> "${input.substring(0, 2)}:${input.substring(2)}"
                 input.length >= 2 -> "${input.substring(0, 2)}:"
                 else -> input
             }
+
             if (formatted != time) {
-                editText.setText(formatted)
-                editText.setSelection(formatted.length)
+                til.editText?.setText(formatted)
+                til.editText?.setSelection(formatted.length)
             }
+
+            checkTime(til)
+        }
+    }
+
+    private fun checkTime(til: TextInputLayout, isFocusChanged: Boolean = false) {
+        val text = til.editText?.text.toString()
+        if (text.length == 5) { // Format tamamlandıysa kontrol et
+            val parts = text.split(":")
+            val hour = parts[0].toIntOrNull()
+            val minute = parts[1].toIntOrNull()
+
+            if (hour == null || minute == null || hour !in 0..23 || minute !in 0..59) {
+                // Geçersiz saat veya dakika girildiyse uyarı ver
+                til.error = "Geçerli bir saat giriniz (00:00 - 23:59)"
+            }
+        } else {
+            if (isFocusChanged)
+                til.error = "Geçerli bir saat giriniz (00:00 - 23:59)"
         }
     }
 
